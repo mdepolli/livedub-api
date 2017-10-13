@@ -12,8 +12,8 @@ config :logger, level: :warn
 # Configure your database
 config :livedub, Livedub.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
+  username: "marcelo",
+  password: "",
   database: "livedub_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
