@@ -19,8 +19,9 @@ defmodule LivedubWeb.Router do
     get "/", PageController, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", LivedubWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", LivedubWeb do
+    pipe_through :api
+
+    resources "/users", UserController, except: [:new, :edit]
+  end
 end
