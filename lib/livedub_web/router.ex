@@ -13,8 +13,15 @@ defmodule LivedubWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :authorized do
+    plug Guardian.Plug.Pipeline, module: Livedub.Guardian, error_handler: Livedub.AuthErrorHandler
+    plug Guardian.Plug.VerifyHeader, realm: "Bearer"
+    plug Guardian.Plug.EnsureAuthenticated
+    plug Guardian.Plug.LoadResource, ensure: true
+  end
+
   scope "/", LivedubWeb do
-    pipe_through :browser # Use the default browser stack
+    pipe_through :browser
 
     get "/", PageController, :index
   end
@@ -22,6 +29,7 @@ defmodule LivedubWeb.Router do
   scope "/api", LivedubWeb do
     pipe_through :api
 
+    pipe_through :authorized
     resources "/users", UserController, except: [:new, :edit]
   end
 end
