@@ -29,5 +29,4 @@ import_config "#{Mix.env}.exs"
 config :livedub, Livedub.Guardian,
   issuer: "Livedub",
   secret_key: "Ntoa2EwLeXUXjJpEA5lC0KLt7XGU1yOhqTalPWPv24nJ/kXeHf8LcwLm1FVWHb90",
-  token_ttl: { 30, :days },
   error_handler: Livedub.AuthErrorHandler

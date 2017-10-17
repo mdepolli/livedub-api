@@ -29,7 +29,16 @@ defmodule LivedubWeb.Router do
   scope "/api", LivedubWeb do
     pipe_through :api
 
-    pipe_through :authorized
-    resources "/users", UserController, except: [:new, :edit]
+    scope "/" do
+      post "/sessions", SessionController, :create
+      resources "/users", UserController, only: [:create]
+    end
+
+    scope "/" do
+      pipe_through :authorized
+
+      delete "/sessions", SessionController, :destroy
+      resources "/users", UserController, only: [:show]
+    end
   end
 end
