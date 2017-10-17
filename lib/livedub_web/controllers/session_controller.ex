@@ -2,12 +2,13 @@ defmodule LivedubWeb.SessionController do
   use LivedubWeb, :controller
 
   alias Livedub.Accounts
+  alias Livedub.Guardian
 
   action_fallback LivedubWeb.FallbackController
 
   def create(conn, %{"email" => email, "password" => _password}) do
     with user <- Accounts.get_user_by_email!(email) do
-      {:ok, jwt, _claims} = Livedub.Guardian.encode_and_sign(user, %{}, token_type: "access", token_ttl: {1, :month})
+      {:ok, jwt, _claims} = Guardian.encode_and_sign(user, %{}, token_type: "access", token_ttl: {1, :day})
       conn
       |> render("create.json", user: user, jwt: jwt)
     end
@@ -18,8 +19,9 @@ defmodule LivedubWeb.SessionController do
   end
 
   def destroy(conn, _params) do
+    jwt = Guardian.Plug.current_token(conn)
+    Guardian.revoke(jwt)
     conn
-    |> Livedub.Guardian.Plug.sign_out()
     |> send_resp(:no_content, "")
   end
 end
