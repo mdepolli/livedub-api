@@ -44,7 +44,7 @@ defmodule Livedub.Accounts do
     case Comeonin.Bcrypt.check_pass(user, password) do
       {:ok, _} ->
         {:ok, user}
-      {:error, _} ->
+      _ ->
         {:error, :unauthorized}
     end
   end
