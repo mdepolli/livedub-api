@@ -15,12 +15,12 @@ defmodule LivedubWeb.FallbackController do
   def call(conn, {:error, :not_found}) do
     conn
     |> put_status(:not_found)
-    |> render(LivedubWeb.ErrorView, :"404.html")
+    |> render(LivedubWeb.ErrorView, "404.json")
   end
 
   def call(conn, {:error, :unauthorized}) do
     conn
     |> put_status(:unauthorized)
-    |> render(LivedubWeb.ErrorView, :"401.html")
+    |> render(LivedubWeb.ErrorView, "401.json")
   end
 end
