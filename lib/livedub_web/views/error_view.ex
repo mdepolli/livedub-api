@@ -2,7 +2,11 @@ defmodule LivedubWeb.ErrorView do
   use LivedubWeb, :view
 
   def render("404.html", _assigns) do
-    "Page not found"
+    "Resource not found"
+  end
+
+  def render("401.html", _assigns) do
+    "Unauthorized"
   end
 
   def render("500.html", _assigns) do

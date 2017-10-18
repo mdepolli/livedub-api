@@ -6,8 +6,8 @@ defmodule LivedubWeb.SessionController do
 
   action_fallback LivedubWeb.FallbackController
 
-  def create(conn, %{"email" => email, "password" => _password}) do
-    with user <- Accounts.get_user_by_email!(email) do
+  def create(conn, %{"email" => email, "password" => password}) do
+    with {:ok, user} <- Accounts.get_user_and_verify_password(email, password) do
       {:ok, jwt, _claims} = Guardian.encode_and_sign(user, %{}, token_type: "access", token_ttl: {1, :day})
       conn
       |> render("create.json", user: user, jwt: jwt)
