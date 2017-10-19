@@ -8,6 +8,7 @@ defmodule Livedub.Accounts.User do
     field :email, :string
     field :password_hash, :string
     field :password, :string, virtual: true
+    many_to_many :jams, Livedub.Music.Jam, join_through: "jams_users"
 
     timestamps()
   end
@@ -23,6 +24,7 @@ defmodule Livedub.Accounts.User do
     |> validate_length(:email, min: 1, max: 255)
     |> validate_format(:email, ~r/@/)
     |> unique_constraint(:email)
+    |> put_assoc(:jams, attrs[:jams])
   end
 
   @doc false
