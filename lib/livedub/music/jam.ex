@@ -3,6 +3,7 @@ defmodule Livedub.Music.Jam do
   import Ecto.Changeset
 
   alias Livedub.Music.Jam
+  alias Livedub.Accounts.User
 
   schema "jams" do
     field :title, :string
@@ -19,5 +20,12 @@ defmodule Livedub.Music.Jam do
     jam
     |> cast(attrs, @all_fields)
     |> put_assoc(:users, attrs["users"])
+  end
+
+  def add_user_changeset(%Jam{} = jam, %User{} = user) do
+    jam
+    |> Livedub.Repo.preload(:users)
+    |> change()
+    |> put_assoc(:users, [user])
   end
 end
