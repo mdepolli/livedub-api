@@ -1,8 +1,8 @@
 defmodule Livedub.Music.Jam do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Livedub.Music.Jam
 
+  alias Livedub.Music.Jam
 
   schema "jams" do
     field :title, :string
@@ -11,10 +11,13 @@ defmodule Livedub.Music.Jam do
     timestamps()
   end
 
+  @required_fields ~w()a
+  @all_fields ~w(title)a ++ @required_fields
+
   @doc false
   def changeset(%Jam{} = jam, attrs) do
     jam
-    |> cast(attrs, [:title])
-    |> put_assoc(:users, attrs[:users])
+    |> cast(attrs, @all_fields)
+    |> put_assoc(:users, attrs["users"])
   end
 end

@@ -7,6 +7,7 @@ defmodule Livedub.Music do
   alias Livedub.Repo
 
   alias Livedub.Music.Jam
+  alias Livedub.Accounts.User
 
   @doc """
   Returns the list of jams.
@@ -49,9 +50,10 @@ defmodule Livedub.Music do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_jam(attrs \\ %{}) do
+  def create_jam(%User{} = user, attrs \\ %{}) do
+    attrs_with_users = Map.put(attrs, "users", [user])
     %Jam{}
-    |> Jam.changeset(attrs)
+    |> Jam.changeset(attrs_with_users)
     |> Repo.insert()
   end
 
