@@ -21,7 +21,7 @@ defmodule LivedubWeb.JamController do
     render(conn, "show.json", jam: jam)
   end
 
-  def join(conn, %{"id" => id}) do
+  def update(conn, %{"id" => id}) do
     current_user = Livedub.Guardian.Plug.current_resource(conn)
     jam = Music.get_jam!(id)
     with {:ok, %Jam{} = jam} <- Music.add_user_to_jam(jam, current_user) do

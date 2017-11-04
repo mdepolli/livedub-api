@@ -39,8 +39,7 @@ defmodule LivedubWeb.Router do
 
       delete "/sessions", SessionController, :destroy
       resources "/users", UserController, only: [:show]
-      resources "/jams", JamController, only: [:create, :show]
-      post "/jams/:id/join", JamController, :join, as: :join_jam
+      resources "/jams", JamController, only: [:create, :show, :update]
     end
   end
 end
