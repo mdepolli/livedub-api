@@ -62,4 +62,64 @@ defmodule Livedub.MusicTest do
       assert %Ecto.Changeset{} = Music.change_jam(jam)
     end
   end
+
+  describe "clips" do
+    alias Livedub.Music.Clip
+
+    @valid_attrs %{url: "some url"}
+    @update_attrs %{url: "some updated url"}
+    @invalid_attrs %{url: nil}
+
+    def clip_fixture(attrs \\ %{}) do
+      {:ok, clip} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Music.create_clip()
+
+      clip
+    end
+
+    test "list_clips/0 returns all clips" do
+      clip = clip_fixture()
+      assert Music.list_clips() == [clip]
+    end
+
+    test "get_clip!/1 returns the clip with given id" do
+      clip = clip_fixture()
+      assert Music.get_clip!(clip.id) == clip
+    end
+
+    test "create_clip/1 with valid data creates a clip" do
+      assert {:ok, %Clip{} = clip} = Music.create_clip(@valid_attrs)
+      assert clip.url == "some url"
+    end
+
+    test "create_clip/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Music.create_clip(@invalid_attrs)
+    end
+
+    test "update_clip/2 with valid data updates the clip" do
+      clip = clip_fixture()
+      assert {:ok, clip} = Music.update_clip(clip, @update_attrs)
+      assert %Clip{} = clip
+      assert clip.url == "some updated url"
+    end
+
+    test "update_clip/2 with invalid data returns error changeset" do
+      clip = clip_fixture()
+      assert {:error, %Ecto.Changeset{}} = Music.update_clip(clip, @invalid_attrs)
+      assert clip == Music.get_clip!(clip.id)
+    end
+
+    test "delete_clip/1 deletes the clip" do
+      clip = clip_fixture()
+      assert {:ok, %Clip{}} = Music.delete_clip(clip)
+      assert_raise Ecto.NoResultsError, fn -> Music.get_clip!(clip.id) end
+    end
+
+    test "change_clip/1 returns a clip changeset" do
+      clip = clip_fixture()
+      assert %Ecto.Changeset{} = Music.change_clip(clip)
+    end
+  end
 end
