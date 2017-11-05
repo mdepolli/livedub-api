@@ -12,6 +12,7 @@ defmodule LivedubWeb.ClipController do
   end
 
   def create(conn, %{"clip" => clip_params}) do
+    current_user = Livedub.Guardian.Plug.current_resource(conn)
     with {:ok, %Clip{} = clip} <- Music.create_clip(clip_params) do
       conn
       |> put_status(:created)
