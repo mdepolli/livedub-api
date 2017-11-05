@@ -8,7 +8,6 @@ defmodule LivedubWeb.SessionView do
         token: jwt,
         email: user.email
       },
-      message: "You are successfully signed in! Add this token to authorization header to make authorized requests."
     }
   end
 end
