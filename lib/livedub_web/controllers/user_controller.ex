@@ -3,6 +3,7 @@ defmodule LivedubWeb.UserController do
 
   alias Livedub.Accounts
   alias Livedub.Accounts.User
+  alias Livedub.Guardian
 
   action_fallback LivedubWeb.FallbackController
 
