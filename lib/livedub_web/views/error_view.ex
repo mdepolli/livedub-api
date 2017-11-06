@@ -6,15 +6,21 @@ defmodule LivedubWeb.ErrorView do
   end
 
   def render("404.json", _assigns) do
-    "Resource not found"
+    %{
+      "message" => "Resource not found"
+    }
   end
 
   def render("401.json", _assigns) do
-    "Unauthorized"
+    %{
+      "message" => "Unauthorized"
+    }
   end
 
   def render("500.json", _assigns) do
-    "Internal server error"
+    %{
+      "message" => "Internal server error"
+    }
   end
 
   # In case no render clause matches or no
