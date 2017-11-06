@@ -22,6 +22,12 @@ defmodule Livedub.Music do
     Repo.all(Jam)
   end
 
+  def list_jams_for_user(user) do
+    user
+    |> Ecto.assoc(:jams)
+    |> Repo.all
+  end
+
   @doc """
   Gets a single jam.
 

@@ -6,6 +6,12 @@ defmodule LivedubWeb.JamController do
 
   action_fallback LivedubWeb.FallbackController
 
+  def index(conn, _params) do
+    current_user = Livedub.Guardian.Plug.current_resource(conn)
+    jams = Music.list_jams_for_user(current_user)
+    render(conn, "index.json", jams: jams)
+  end
+
   def create(conn, %{"jam" => jam_params}) do
     current_user = Livedub.Guardian.Plug.current_resource(conn)
     with {:ok, %Jam{} = jam} <- Music.create_jam(current_user, jam_params) do
