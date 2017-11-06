@@ -23,9 +23,9 @@ defmodule Livedub.Music.Jam do
   end
 
   def add_user_changeset(%Jam{} = jam, %User{} = user) do
-    jam
-    |> Livedub.Repo.preload(:users)
+    preloaded_jam = Livedub.Repo.preload(jam, :users)
+    preloaded_jam
     |> change()
-    |> put_assoc(:users, [user])
+    |> put_assoc(:users, Enum.uniq([user|preloaded_jam.users]))
   end
 end
