@@ -12,10 +12,13 @@ defmodule Livedub.Music.Clip do
     timestamps()
   end
 
+  @required_fields ~w(url user_id jam_id)a
+  @all_fields ~w()a ++ @required_fields
+
   @doc false
   def changeset(%Clip{} = clip, attrs) do
     clip
-    |> cast(attrs, [:url])
-    |> validate_required([:url])
+    |> cast(attrs, @all_fields)
+    |> validate_required(@required_fields)
   end
 end

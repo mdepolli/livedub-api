@@ -159,9 +159,10 @@ defmodule Livedub.Music do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_clip(attrs \\ %{}) do
+  def create_clip(%User{} = user, attrs \\ %{}) do
+    attrs_with_user_id = Map.put(attrs, "user_id", user.id)
     %Clip{}
-    |> Clip.changeset(attrs)
+    |> Clip.changeset(attrs_with_user_id)
     |> Repo.insert()
   end
 

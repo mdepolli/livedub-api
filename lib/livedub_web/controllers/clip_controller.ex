@@ -13,7 +13,7 @@ defmodule LivedubWeb.ClipController do
 
   def create(conn, %{"clip" => clip_params}) do
     current_user = Livedub.Guardian.Plug.current_resource(conn)
-    with {:ok, %Clip{} = clip} <- Music.create_clip(clip_params) do
+    with {:ok, %Clip{} = clip} <- Music.create_clip(current_user, clip_params) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", clip_path(conn, :show, clip))
