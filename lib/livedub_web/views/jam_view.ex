@@ -3,6 +3,7 @@ defmodule LivedubWeb.JamView do
 
   alias LivedubWeb.JamView
   alias LivedubWeb.UserView
+  alias LivedubWeb.ClipView
 
   def render("index.json", %{jams: jams}) do
     %{data: render_many(jams, JamView, "jam.json")}
@@ -13,11 +14,14 @@ defmodule LivedubWeb.JamView do
   end
 
   def render("jam.json", %{jam: jam}) do
-    jam_preloaded = jam |> Livedub.Repo.preload(:users)
+    jam_preloaded = jam
+    |> Livedub.Repo.preload(:users)
+    |> Livedub.Repo.preload(:clips)
     %{
       id: jam_preloaded.id,
       title: jam_preloaded.title,
-      users: render_many(jam_preloaded.users, UserView, "user.json")
+      users: render_many(jam_preloaded.users, UserView, "user.json"),
+      clips: render_many(jam_preloaded.clips, ClipView, "clip.json")
     }
   end
 end

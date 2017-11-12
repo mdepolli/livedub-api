@@ -7,6 +7,7 @@ defmodule Livedub.Music.Jam do
 
   schema "jams" do
     field :title, :string
+    has_many :clips, Livedub.Music.Clip
     many_to_many :users, Livedub.Accounts.User, join_through: "jams_users"
 
     timestamps()
