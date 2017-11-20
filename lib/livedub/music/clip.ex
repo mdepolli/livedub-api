@@ -6,7 +6,7 @@ defmodule Livedub.Music.Clip do
 
   schema "clips" do
     field :url, :string
-    field :start_time, :integer
+    field :start_time, :float
     belongs_to :user, Livedub.Accounts.User
     belongs_to :jam, Livedub.Music.Jam
 
