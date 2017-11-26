@@ -6,6 +6,7 @@ defmodule LivedubWeb.SessionView do
       status: :ok,
       data: %{
         token: jwt,
+        id: user.id,
         email: user.email
       },
     }
