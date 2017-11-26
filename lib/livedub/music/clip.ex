@@ -7,13 +7,14 @@ defmodule Livedub.Music.Clip do
   schema "clips" do
     field :url, :string
     field :start_time, :float
+    field :duration, :float
     belongs_to :user, Livedub.Accounts.User
     belongs_to :jam, Livedub.Music.Jam
 
     timestamps()
   end
 
-  @required_fields ~w(url start_time user_id jam_id)a
+  @required_fields ~w(url start_time duration user_id jam_id)a
   @all_fields ~w()a ++ @required_fields
 
   @doc false

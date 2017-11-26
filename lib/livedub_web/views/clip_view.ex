@@ -15,9 +15,10 @@ defmodule LivedubWeb.ClipView do
       id: clip.id,
       user_id: clip.user_id,
       jam_id: clip.jam_id,
-      created_at: clip.inserted_at,
       url: clip.url,
       start_time: clip.start_time,
+      duration: clip.duration,
+      created_at: clip.inserted_at
     }
   end
 end
