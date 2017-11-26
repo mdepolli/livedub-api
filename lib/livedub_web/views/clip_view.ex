@@ -13,10 +13,11 @@ defmodule LivedubWeb.ClipView do
   def render("clip.json", %{clip: clip}) do
     %{
       id: clip.id,
+      user_id: clip.user_id,
+      jam_id: clip.jam_id,
+      created_at: clip.inserted_at,
       url: clip.url,
       start_time: clip.start_time,
-      user_id: clip.user_id,
-      jam_id: clip.jam_id
     }
   end
 end
