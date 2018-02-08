@@ -6,9 +6,9 @@ defmodule Livedub.Music.Jam do
   alias Livedub.Accounts.User
 
   schema "jams" do
-    field :title, :string
-    has_many :clips, Livedub.Music.Clip
-    many_to_many :users, Livedub.Accounts.User, join_through: "jams_users"
+    field(:title, :string)
+    has_many(:clips, Livedub.Music.Clip)
+    many_to_many(:users, Livedub.Accounts.User, join_through: "jams_users")
 
     timestamps()
   end
@@ -25,8 +25,9 @@ defmodule Livedub.Music.Jam do
 
   def add_user_changeset(%Jam{} = jam, %User{} = user) do
     preloaded_jam = Livedub.Repo.preload(jam, :users)
+
     preloaded_jam
     |> change()
-    |> put_assoc(:users, Enum.uniq([user|preloaded_jam.users]))
+    |> put_assoc(:users, Enum.uniq([user | preloaded_jam.users]))
   end
 end

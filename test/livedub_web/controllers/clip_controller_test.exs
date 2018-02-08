@@ -19,24 +19,22 @@ defmodule LivedubWeb.ClipControllerTest do
 
   describe "index" do
     test "lists all clips", %{conn: conn} do
-      conn = get conn, clip_path(conn, :index)
+      conn = get(conn, clip_path(conn, :index))
       assert json_response(conn, 200)["data"] == []
     end
   end
 
   describe "create clip" do
     test "renders clip when data is valid", %{conn: conn} do
-      conn = post conn, clip_path(conn, :create), clip: @create_attrs
+      conn = post(conn, clip_path(conn, :create), clip: @create_attrs)
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
-      conn = get conn, clip_path(conn, :show, id)
-      assert json_response(conn, 200)["data"] == %{
-        "id" => id,
-        "url" => "some url"}
+      conn = get(conn, clip_path(conn, :show, id))
+      assert json_response(conn, 200)["data"] == %{"id" => id, "url" => "some url"}
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post conn, clip_path(conn, :create), clip: @invalid_attrs
+      conn = post(conn, clip_path(conn, :create), clip: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
@@ -45,17 +43,15 @@ defmodule LivedubWeb.ClipControllerTest do
     setup [:create_clip]
 
     test "renders clip when data is valid", %{conn: conn, clip: %Clip{id: id} = clip} do
-      conn = put conn, clip_path(conn, :update, clip), clip: @update_attrs
+      conn = put(conn, clip_path(conn, :update, clip), clip: @update_attrs)
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
-      conn = get conn, clip_path(conn, :show, id)
-      assert json_response(conn, 200)["data"] == %{
-        "id" => id,
-        "url" => "some updated url"}
+      conn = get(conn, clip_path(conn, :show, id))
+      assert json_response(conn, 200)["data"] == %{"id" => id, "url" => "some updated url"}
     end
 
     test "renders errors when data is invalid", %{conn: conn, clip: clip} do
-      conn = put conn, clip_path(conn, :update, clip), clip: @invalid_attrs
+      conn = put(conn, clip_path(conn, :update, clip), clip: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
@@ -64,11 +60,12 @@ defmodule LivedubWeb.ClipControllerTest do
     setup [:create_clip]
 
     test "deletes chosen clip", %{conn: conn, clip: clip} do
-      conn = delete conn, clip_path(conn, :delete, clip)
+      conn = delete(conn, clip_path(conn, :delete, clip))
       assert response(conn, 204)
-      assert_error_sent 404, fn ->
-        get conn, clip_path(conn, :show, clip)
-      end
+
+      assert_error_sent(404, fn ->
+        get(conn, clip_path(conn, :show, clip))
+      end)
     end
   end
 

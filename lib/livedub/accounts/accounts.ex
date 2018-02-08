@@ -41,9 +41,11 @@ defmodule Livedub.Accounts do
 
   def get_user_and_verify_password(email, password) do
     user = Repo.get_by(User, email: email)
+
     case Comeonin.Bcrypt.check_pass(user, password) do
       {:ok, _} ->
         {:ok, user}
+
       _ ->
         {:error, :unauthorized}
     end

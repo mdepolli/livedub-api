@@ -11,7 +11,7 @@ defmodule Livedub.Application do
       # Start the Ecto repository
       supervisor(Livedub.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(LivedubWeb.Endpoint, []),
+      supervisor(LivedubWeb.Endpoint, [])
       # Start your own worker by calling: Livedub.Worker.start_link(arg1, arg2, arg3)
       # worker(Livedub.Worker, [arg1, arg2, arg3]),
     ]

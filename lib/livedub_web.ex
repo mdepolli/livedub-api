@@ -28,8 +28,9 @@ defmodule LivedubWeb do
 
   def view do
     quote do
-      use Phoenix.View, root: "lib/livedub_web/templates",
-                        namespace: LivedubWeb
+      use Phoenix.View,
+        root: "lib/livedub_web/templates",
+        namespace: LivedubWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_flash: 2, view_module: 1]

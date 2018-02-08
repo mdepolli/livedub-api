@@ -8,7 +8,7 @@ defmodule LivedubWeb.SessionView do
         token: jwt,
         id: user.id,
         email: user.email
-      },
+      }
     }
   end
 end

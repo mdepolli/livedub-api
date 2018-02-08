@@ -19,24 +19,22 @@ defmodule LivedubWeb.JamControllerTest do
 
   describe "index" do
     test "lists all jams", %{conn: conn} do
-      conn = get conn, jam_path(conn, :index)
+      conn = get(conn, jam_path(conn, :index))
       assert json_response(conn, 200)["data"] == []
     end
   end
 
   describe "create jam" do
     test "renders jam when data is valid", %{conn: conn} do
-      conn = post conn, jam_path(conn, :create), jam: @create_attrs
+      conn = post(conn, jam_path(conn, :create), jam: @create_attrs)
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
-      conn = get conn, jam_path(conn, :show, id)
-      assert json_response(conn, 200)["data"] == %{
-        "id" => id,
-        "title" => "some title"}
+      conn = get(conn, jam_path(conn, :show, id))
+      assert json_response(conn, 200)["data"] == %{"id" => id, "title" => "some title"}
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post conn, jam_path(conn, :create), jam: @invalid_attrs
+      conn = post(conn, jam_path(conn, :create), jam: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
@@ -45,17 +43,15 @@ defmodule LivedubWeb.JamControllerTest do
     setup [:create_jam]
 
     test "renders jam when data is valid", %{conn: conn, jam: %Jam{id: id} = jam} do
-      conn = put conn, jam_path(conn, :update, jam), jam: @update_attrs
+      conn = put(conn, jam_path(conn, :update, jam), jam: @update_attrs)
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
-      conn = get conn, jam_path(conn, :show, id)
-      assert json_response(conn, 200)["data"] == %{
-        "id" => id,
-        "title" => "some updated title"}
+      conn = get(conn, jam_path(conn, :show, id))
+      assert json_response(conn, 200)["data"] == %{"id" => id, "title" => "some updated title"}
     end
 
     test "renders errors when data is invalid", %{conn: conn, jam: jam} do
-      conn = put conn, jam_path(conn, :update, jam), jam: @invalid_attrs
+      conn = put(conn, jam_path(conn, :update, jam), jam: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
@@ -64,11 +60,12 @@ defmodule LivedubWeb.JamControllerTest do
     setup [:create_jam]
 
     test "deletes chosen jam", %{conn: conn, jam: jam} do
-      conn = delete conn, jam_path(conn, :delete, jam)
+      conn = delete(conn, jam_path(conn, :delete, jam))
       assert response(conn, 204)
-      assert_error_sent 404, fn ->
-        get conn, jam_path(conn, :show, jam)
-      end
+
+      assert_error_sent(404, fn ->
+        get(conn, jam_path(conn, :show, jam))
+      end)
     end
   end
 

@@ -4,7 +4,7 @@ defmodule LivedubWeb.JamController do
   alias Livedub.Music
   alias Livedub.Music.Jam
 
-  action_fallback LivedubWeb.FallbackController
+  action_fallback(LivedubWeb.FallbackController)
 
   def index(conn, _params) do
     current_user = Livedub.Guardian.Plug.current_resource(conn)
@@ -14,6 +14,7 @@ defmodule LivedubWeb.JamController do
 
   def create(conn, %{"jam" => jam_params}) do
     current_user = Livedub.Guardian.Plug.current_resource(conn)
+
     with {:ok, %Jam{} = jam} <- Music.create_jam(current_user, jam_params) do
       conn
       |> put_status(:created)
@@ -30,6 +31,7 @@ defmodule LivedubWeb.JamController do
   def update(conn, %{"id" => id}) do
     current_user = Livedub.Guardian.Plug.current_resource(conn)
     jam = Music.get_jam!(id)
+
     with {:ok, %Jam{} = jam} <- Music.add_user_to_jam(jam, current_user) do
       conn
       |> put_status(:ok)

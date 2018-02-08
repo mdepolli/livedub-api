@@ -14,9 +14,11 @@ defmodule LivedubWeb.JamView do
   end
 
   def render("jam.json", %{jam: jam}) do
-    jam_preloaded = jam
-    |> Livedub.Repo.preload(:users)
-    |> Livedub.Repo.preload(:clips)
+    jam_preloaded =
+      jam
+      |> Livedub.Repo.preload(:users)
+      |> Livedub.Repo.preload(:clips)
+
     %{
       id: jam_preloaded.id,
       title: jam_preloaded.title,

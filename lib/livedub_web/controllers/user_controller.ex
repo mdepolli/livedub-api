@@ -5,7 +5,7 @@ defmodule LivedubWeb.UserController do
   alias Livedub.Accounts.User
   alias Livedub.Guardian
 
-  action_fallback LivedubWeb.FallbackController
+  action_fallback(LivedubWeb.FallbackController)
 
   # def index(conn, _params) do
   #   users = Accounts.list_users()
@@ -14,7 +14,9 @@ defmodule LivedubWeb.UserController do
 
   def create(conn, %{"user" => user_params}) do
     with {:ok, %User{} = user} <- Accounts.create_user(user_params) do
-      {:ok, jwt, _claims} = Guardian.encode_and_sign(user, %{}, token_type: "access", token_ttl: {1, :day})
+      {:ok, jwt, _claims} =
+        Guardian.encode_and_sign(user, %{}, token_type: "access", token_ttl: {1, :day})
+
       conn
       |> put_status(:created)
       |> put_resp_header("location", user_path(conn, :show, user))

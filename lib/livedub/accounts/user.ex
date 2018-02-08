@@ -3,12 +3,11 @@ defmodule Livedub.Accounts.User do
   import Ecto.Changeset
   alias Livedub.Accounts.User
 
-
   schema "users" do
-    field :email, :string
-    field :password_hash, :string
-    field :password, :string, virtual: true
-    many_to_many :jams, Livedub.Music.Jam, join_through: "jams_users"
+    field(:email, :string)
+    field(:password_hash, :string)
+    field(:password, :string, virtual: true)
+    many_to_many(:jams, Livedub.Music.Jam, join_through: "jams_users")
 
     timestamps()
   end
@@ -39,6 +38,7 @@ defmodule Livedub.Accounts.User do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
         put_change(changeset, :password_hash, Comeonin.Bcrypt.hashpwsalt(pass))
+
       _ ->
         changeset
     end

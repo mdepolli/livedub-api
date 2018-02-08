@@ -26,17 +26,19 @@ defmodule LivedubWeb.UserControllerTest do
 
   describe "create user" do
     test "renders user when data is valid", %{conn: conn} do
-      conn = post conn, user_path(conn, :create), user: @create_attrs
+      conn = post(conn, user_path(conn, :create), user: @create_attrs)
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
-      conn = get conn, user_path(conn, :show, id)
+      conn = get(conn, user_path(conn, :show, id))
+
       assert json_response(conn, 200)["data"] == %{
-        "id" => id,
-        "email" => "peter.potamus@example.com"}
+               "id" => id,
+               "email" => "peter.potamus@example.com"
+             }
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post conn, user_path(conn, :create), user: @invalid_attrs
+      conn = post(conn, user_path(conn, :create), user: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
   end
