@@ -14,15 +14,11 @@ defmodule LivedubWeb.Router do
   end
 
   pipeline :authorized do
-    plug(
-      Guardian.Plug.Pipeline,
-      module: Livedub.Guardian,
-      error_handler: Livedub.AuthErrorHandler
-    )
-
+    plug(Guardian.Plug.Pipeline, module: Livedub.Guardian, error_handler: Livedub.AuthErrorHandler)
     plug(Guardian.Plug.VerifyHeader, realm: "Bearer")
-    plug(Guardian.Plug.EnsureAuthenticated)
-    plug(Guardian.Plug.LoadResource, ensure: true)
+    # plug Guardian.Plug.EnsureAuthenticated
+    plug(Guardian.Plug.LoadResource, allow_blank: true)
+    plug(LivedubWeb.Context)
   end
 
   scope "/", LivedubWeb do
@@ -31,21 +27,22 @@ defmodule LivedubWeb.Router do
     get("/", PageController, :index)
   end
 
-  scope "/api", LivedubWeb do
+  scope "/api" do
     pipe_through(:api)
+    pipe_through(:authorized)
 
-    scope "/" do
-      post("/sessions", SessionController, :create)
-      resources("/users", UserController, only: [:create])
-    end
+    forward("/", Absinthe.Plug, schema: LivedubWeb.Schema)
 
-    scope "/" do
-      pipe_through(:authorized)
-
-      delete("/sessions", SessionController, :destroy)
-      resources("/users", UserController, only: [:show])
-      resources("/jams", JamController, only: [:index, :create, :show, :update])
-      resources("/clips", ClipController, only: [:index, :create, :show])
-    end
+    delete("/sessions", SessionController, :destroy)
+    resources("/users", UserController, only: [:show])
+    resources("/jams", JamController, only: [:index, :create, :show, :update])
+    resources("/clips", ClipController, only: [:index, :create, :show])
   end
+
+  forward(
+    "/graphiql",
+    Absinthe.Plug.GraphiQL,
+    schema: LivedubWeb.Schema,
+    interface: :simple
+  )
 end
