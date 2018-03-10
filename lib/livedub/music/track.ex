@@ -5,8 +5,8 @@ defmodule Livedub.Music.Track do
 
 
   schema "tracks" do
-    field :user_id, :id
-    field :jam_id, :id
+    belongs_to(:user, Livedub.Accounts.User)
+    belongs_to(:jam, Livedub.Music.Jam)
 
     timestamps()
   end

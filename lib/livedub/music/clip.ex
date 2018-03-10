@@ -8,7 +8,7 @@ defmodule Livedub.Music.Clip do
     field(:start_time, :float)
     field(:duration, :float)
     belongs_to(:user, Livedub.Accounts.User)
-    belongs_to(:jam, Livedub.Music.Jam)
+    belongs_to(:track, Livedub.Music.Track)
 
     timestamps()
   end

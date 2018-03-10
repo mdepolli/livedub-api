@@ -1,7 +1,7 @@
 defmodule LivedubWeb.Schema do
   use Absinthe.Schema
 
-  alias LivedubWeb.AccountsResolver
+  alias LivedubWeb.{AccountsResolver, MusicResolver}
 
   object :session do
     field(:token, :string)
@@ -12,9 +12,18 @@ defmodule LivedubWeb.Schema do
     field(:email, non_null(:string))
   end
 
+  object :jam do
+    field(:title, :string)
+    field(:admin_id, non_null(:integer))
+  end
+
   query do
     field :all_users, list_of(non_null(:user)) do
       resolve(&AccountsResolver.all_users/3)
+    end
+
+    field :all_jams, list_of(:jam) do
+      resolve(&MusicResolver.all_jams/3)
     end
   end
 
@@ -31,6 +40,12 @@ defmodule LivedubWeb.Schema do
       arg(:password, non_null(:string))
 
       resolve(&AccountsResolver.create_user/3)
+    end
+
+    field :create_jam, type: :jam do
+      arg(:title, :string)
+
+      resolve(&MusicResolver.create_jam/3)
     end
   end
 end

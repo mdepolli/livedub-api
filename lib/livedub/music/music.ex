@@ -6,8 +6,7 @@ defmodule Livedub.Music do
   import Ecto.Query, warn: false
   alias Livedub.Repo
 
-  alias Livedub.Music.Jam
-  alias Livedub.Accounts.User
+  alias Livedub.{Music.Jam, Accounts.User}
 
   @doc """
   Returns the list of jams.
@@ -24,7 +23,7 @@ defmodule Livedub.Music do
 
   def list_jams_for_user(user) do
     user
-    |> Ecto.assoc(:jams)
+    |> Ecto.assoc(:managed_jams)
     |> Repo.all()
   end
 
@@ -57,10 +56,10 @@ defmodule Livedub.Music do
 
   """
   def create_jam(%User{} = user, attrs \\ %{}) do
-    attrs_with_users = Map.put(attrs, "users", [user])
+    attrs_with_admin = Map.put(attrs, :admin_id, user.id)
 
     %Jam{}
-    |> Jam.changeset(attrs_with_users)
+    |> Jam.changeset(attrs_with_admin)
     |> Repo.insert()
   end
 
