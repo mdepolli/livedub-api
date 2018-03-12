@@ -7,7 +7,6 @@ defmodule Livedub.Accounts.User do
     field(:email, :string)
     field(:password_hash, :string)
     field(:password, :string, virtual: true)
-    has_many(:managed_jams, Livedub.Music.Jam, foreign_key: :admin_id)
     many_to_many(:jams, Livedub.Music.Jam, join_through: "jams_users")
 
     timestamps()

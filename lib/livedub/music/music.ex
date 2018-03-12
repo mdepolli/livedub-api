@@ -23,7 +23,7 @@ defmodule Livedub.Music do
 
   def list_jams_for_user(user) do
     user
-    |> Ecto.assoc(:managed_jams)
+    |> Ecto.assoc(:jams)
     |> Repo.all()
   end
 
@@ -56,10 +56,10 @@ defmodule Livedub.Music do
 
   """
   def create_jam(%User{} = user, attrs \\ %{}) do
-    attrs_with_admin = Map.put(attrs, :admin_id, user.id)
+    attrs_with_users = Map.put(attrs, :users, [user])
 
     %Jam{}
-    |> Jam.changeset(attrs_with_admin)
+    |> Jam.changeset(attrs_with_users)
     |> Repo.insert()
   end
 

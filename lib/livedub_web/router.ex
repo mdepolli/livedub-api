@@ -21,11 +21,11 @@ defmodule LivedubWeb.Router do
     plug(LivedubWeb.Context)
   end
 
-  scope "/", LivedubWeb do
-    pipe_through(:browser)
+  # scope "/", LivedubWeb do
+  #   pipe_through(:browser)
 
-    get("/", PageController, :index)
-  end
+  #   get("/", PageController, :index)
+  # end
 
   scope "/api" do
     pipe_through(:api)

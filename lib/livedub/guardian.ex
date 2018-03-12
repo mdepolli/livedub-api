@@ -12,7 +12,8 @@ defmodule Livedub.Guardian do
   # end
 
   def resource_from_claims(claims) do
-    {:ok, Accounts.get_user!(claims["sub"])}
+    id = claims["sub"]
+    {:ok, Accounts.get_user!(id)}
   end
 
   # def resource_from_claims(_claims) do

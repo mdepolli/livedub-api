@@ -14,7 +14,7 @@ defmodule LivedubWeb.Schema do
 
   object :jam do
     field(:title, :string)
-    field(:admin_id, non_null(:integer))
+    field(:users, list_of(non_null(:user)))
   end
 
   query do
