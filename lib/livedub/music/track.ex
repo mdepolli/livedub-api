@@ -3,7 +3,6 @@ defmodule Livedub.Music.Track do
   import Ecto.Changeset
   alias Livedub.Music.Track
 
-
   schema "tracks" do
     belongs_to(:user, Livedub.Accounts.User)
     belongs_to(:jam, Livedub.Music.Jam)

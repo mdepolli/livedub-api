@@ -14,7 +14,12 @@ defmodule LivedubWeb.Router do
   end
 
   pipeline :authorized do
-    plug(Guardian.Plug.Pipeline, module: Livedub.Guardian, error_handler: Livedub.AuthErrorHandler)
+    plug(
+      Guardian.Plug.Pipeline,
+      module: Livedub.Guardian,
+      error_handler: Livedub.AuthErrorHandler
+    )
+
     plug(Guardian.Plug.VerifyHeader, realm: "Bearer")
     # plug Guardian.Plug.EnsureAuthenticated
     plug(Guardian.Plug.LoadResource, allow_blank: true)
