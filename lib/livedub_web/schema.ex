@@ -13,6 +13,7 @@ defmodule LivedubWeb.Schema do
   end
 
   object :jam do
+    field(:id, non_null(:id))
     field(:title, :string)
     field(:users, list_of(non_null(:user)))
   end
