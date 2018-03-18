@@ -7,6 +7,10 @@ defmodule LivedubWeb.MusicResolver do
     end
   end
 
+  def create_jam(_root, _args, _info) do
+    {:error, "Unauthorized"}
+  end
+
   def all_jams(_root, _args, %{context: %{current_user: current_user}}) do
     jams = Music.list_jams_for_user(current_user)
     {:ok, jams}
