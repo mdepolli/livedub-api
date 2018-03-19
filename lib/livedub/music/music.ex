@@ -131,6 +131,12 @@ defmodule Livedub.Music do
     Repo.all(Clip)
   end
 
+  def list_clips_for_user(user) do
+    user
+    |> Ecto.assoc(:clips)
+    |> Repo.all()
+  end
+
   @doc """
   Gets a single clip.
 
@@ -228,6 +234,12 @@ defmodule Livedub.Music do
   """
   def list_tracks do
     Repo.all(Track)
+  end
+
+  def list_tracks_for_user(user) do
+    user
+    |> Ecto.assoc(:tracks)
+    |> Repo.all()
   end
 
   @doc """

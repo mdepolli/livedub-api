@@ -6,6 +6,7 @@ defmodule Livedub.Music.Track do
   schema "tracks" do
     belongs_to(:user, Livedub.Accounts.User)
     belongs_to(:jam, Livedub.Music.Jam)
+    has_many(:clips, Livedub.Music.Clip)
 
     timestamps()
   end

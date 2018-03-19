@@ -7,13 +7,12 @@ defmodule Livedub.Music.Clip do
     field(:url, :string)
     field(:start_time, :float)
     field(:duration, :float)
-    belongs_to(:user, Livedub.Accounts.User)
     belongs_to(:track, Livedub.Music.Track)
 
     timestamps()
   end
 
-  @required_fields ~w(url start_time duration user_id track_id)a
+  @required_fields ~w(url start_time duration track_id)a
   @all_fields ~w()a ++ @required_fields
 
   @doc false

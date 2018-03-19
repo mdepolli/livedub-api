@@ -8,6 +8,8 @@ defmodule Livedub.Accounts.User do
     field(:password_hash, :string)
     field(:password, :string, virtual: true)
     many_to_many(:jams, Livedub.Music.Jam, join_through: "jams_users")
+    has_many(:tracks, Livedub.Music.Track)
+    has_many(:clips, through: [:tracks, :clips])
 
     timestamps()
   end

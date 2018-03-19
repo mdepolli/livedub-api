@@ -41,6 +41,14 @@ defmodule LivedubWeb.Schema do
     field :all_jams, list_of(:jam) do
       resolve(&MusicResolver.all_jams/3)
     end
+
+    field :all_tracks, list_of(:track) do
+      resolve(&MusicResolver.all_tracks/3)
+    end
+
+    field :all_clips, list_of(:clip) do
+      resolve(&MusicResolver.all_clips/3)
+    end
   end
 
   mutation do
