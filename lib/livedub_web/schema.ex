@@ -18,6 +18,12 @@ defmodule LivedubWeb.Schema do
     field(:users, list_of(non_null(:user)))
   end
 
+  object :track do
+    field(:id, non_null(:id))
+    field(:user_id, non_null(:integer))
+    field(:jam_id, non_null(:integer))
+  end
+
   query do
     field :all_users, list_of(non_null(:user)) do
       resolve(&AccountsResolver.all_users/3)
@@ -53,6 +59,12 @@ defmodule LivedubWeb.Schema do
       arg(:jam_id, non_null(:integer))
 
       resolve(&MusicResolver.add_user_to_jam/3)
+    end
+
+    field :create_track, type: :track do
+      arg(:jam_id, non_null(:integer))
+
+      resolve(&MusicResolver.create_track/3)
     end
   end
 end

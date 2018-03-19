@@ -10,10 +10,13 @@ defmodule Livedub.Music.Track do
     timestamps()
   end
 
+  @required_fields ~w(user_id jam_id)a
+  @all_fields ~w()a ++ @required_fields
+
   @doc false
   def changeset(%Track{} = track, attrs) do
     track
-    |> cast(attrs, [])
-    |> validate_required([])
+    |> cast(attrs, @all_fields)
+    |> validate_required(@required_fields)
   end
 end
