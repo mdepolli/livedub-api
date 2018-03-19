@@ -6,7 +6,7 @@ defmodule Livedub.Music do
   import Ecto.Query, warn: false
   alias Livedub.Repo
 
-  alias Livedub.{Accounts.User, Music.Jam, Music.Track}
+  alias Livedub.{Accounts.User, Music.Jam, Music.Track, Music.Clip}
 
   @doc """
   Returns the list of jams.
@@ -159,11 +159,11 @@ defmodule Livedub.Music do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_clip(%User{} = user, attrs \\ %{}) do
-    attrs_with_user_id = Map.put(attrs, :user_id, user.id)
+  def create_clip(%User{} = user, %Track{} = track, attrs \\ %{}) do
+    attrs = Map.merge(attrs, %{user_id: user.id, track_id: track.id})
 
     %Clip{}
-    |> Clip.changeset(attrs_with_user_id)
+    |> Clip.changeset(attrs)
     |> Repo.insert()
   end
 
@@ -177,6 +177,7 @@ defmodule Livedub.Music do
 
       iex> update_clip(clip, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
+
 
   """
   def update_clip(%Clip{} = clip, attrs) do
@@ -257,7 +258,7 @@ defmodule Livedub.Music do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_track(%Jam{} = jam, %User{} = user, attrs \\ %{}) do
+  def create_track(%User{} = user, %Jam{} = jam, attrs \\ %{}) do
     attrs = Map.merge(attrs, %{user_id: user.id, jam_id: jam.id})
 
     %Track{}

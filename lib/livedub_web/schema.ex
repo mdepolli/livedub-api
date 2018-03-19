@@ -24,6 +24,15 @@ defmodule LivedubWeb.Schema do
     field(:jam_id, non_null(:integer))
   end
 
+  object :clip do
+    field(:id, non_null(:id))
+    field(:url, :string)
+    field(:start_time, :float)
+    field(:duration, :float)
+    field(:user_id, non_null(:integer))
+    field(:track_id, non_null(:integer))
+  end
+
   query do
     field :all_users, list_of(non_null(:user)) do
       resolve(&AccountsResolver.all_users/3)
@@ -65,6 +74,15 @@ defmodule LivedubWeb.Schema do
       arg(:jam_id, non_null(:integer))
 
       resolve(&MusicResolver.create_track/3)
+    end
+
+    field :create_clip, type: :clip do
+      arg(:track_id, non_null(:integer))
+      arg(:url, non_null(:string))
+      arg(:start_time, non_null(:float))
+      arg(:duration, non_null(:float))
+
+      resolve(&MusicResolver.create_clip/3)
     end
   end
 end

@@ -13,7 +13,7 @@ defmodule Livedub.Music.Clip do
     timestamps()
   end
 
-  @required_fields ~w(url start_time duration user_id jam_id)a
+  @required_fields ~w(url start_time duration user_id track_id)a
   @all_fields ~w()a ++ @required_fields
 
   @doc false
