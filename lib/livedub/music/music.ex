@@ -116,7 +116,107 @@ defmodule Livedub.Music do
     Jam.changeset(jam, %{})
   end
 
-  alias Livedub.Music.Clip
+  @doc """
+  Returns the list of tracks.
+
+  ## Examples
+
+      iex> list_tracks()
+      [%Track{}, ...]
+
+  """
+  def list_tracks do
+    Repo.all(Track)
+  end
+
+  def list_tracks_for_user(user) do
+    user
+    |> Ecto.assoc(:tracks)
+    |> Repo.all()
+  end
+
+  @doc """
+  Gets a single track.
+
+  Raises `Ecto.NoResultsError` if the Track does not exist.
+
+  ## Examples
+
+      iex> get_track!(123)
+      %Track{}
+
+      iex> get_track!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_track!(id), do: Repo.get!(Track, id)
+
+  @doc """
+  Creates a track.
+
+  ## Examples
+
+      iex> create_track(%{field: value})
+      {:ok, %Track{}}
+
+      iex> create_track(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_track(%User{} = user, %Jam{} = jam, attrs \\ %{}) do
+    attrs = Map.merge(attrs, %{user_id: user.id, jam_id: jam.id})
+
+    %Track{}
+    |> Track.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a track.
+
+  ## Examples
+
+      iex> update_track(track, %{field: new_value})
+      {:ok, %Track{}}
+
+      iex> update_track(track, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_track(%Track{} = track, attrs) do
+    track
+    |> Track.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a Track.
+
+  ## Examples
+
+      iex> delete_track(track)
+      {:ok, %Track{}}
+
+      iex> delete_track(track)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_track(%Track{} = track) do
+    Repo.delete(track)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking track changes.
+
+  ## Examples
+
+      iex> change_track(track)
+      %Ecto.Changeset{source: %Track{}}
+
+  """
+  def change_track(%Track{} = track) do
+    Track.changeset(track, %{})
+  end
 
   @doc """
   Returns the list of clips.
@@ -219,109 +319,5 @@ defmodule Livedub.Music do
   """
   def change_clip(%Clip{} = clip) do
     Clip.changeset(clip, %{})
-  end
-
-  alias Livedub.Music.Track
-
-  @doc """
-  Returns the list of tracks.
-
-  ## Examples
-
-      iex> list_tracks()
-      [%Track{}, ...]
-
-  """
-  def list_tracks do
-    Repo.all(Track)
-  end
-
-  def list_tracks_for_user(user) do
-    user
-    |> Ecto.assoc(:tracks)
-    |> Repo.all()
-  end
-
-  @doc """
-  Gets a single track.
-
-  Raises `Ecto.NoResultsError` if the Track does not exist.
-
-  ## Examples
-
-      iex> get_track!(123)
-      %Track{}
-
-      iex> get_track!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_track!(id), do: Repo.get!(Track, id)
-
-  @doc """
-  Creates a track.
-
-  ## Examples
-
-      iex> create_track(%{field: value})
-      {:ok, %Track{}}
-
-      iex> create_track(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_track(%User{} = user, %Jam{} = jam, attrs \\ %{}) do
-    attrs = Map.merge(attrs, %{user_id: user.id, jam_id: jam.id})
-
-    %Track{}
-    |> Track.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Updates a track.
-
-  ## Examples
-
-      iex> update_track(track, %{field: new_value})
-      {:ok, %Track{}}
-
-      iex> update_track(track, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_track(%Track{} = track, attrs) do
-    track
-    |> Track.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a Track.
-
-  ## Examples
-
-      iex> delete_track(track)
-      {:ok, %Track{}}
-
-      iex> delete_track(track)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_track(%Track{} = track) do
-    Repo.delete(track)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking track changes.
-
-  ## Examples
-
-      iex> change_track(track)
-      %Ecto.Changeset{source: %Track{}}
-
-  """
-  def change_track(%Track{} = track) do
-    Track.changeset(track, %{})
   end
 end
