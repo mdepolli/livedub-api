@@ -30,7 +30,11 @@ defmodule LivedubWeb.JamControllerTest do
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
       conn = get(conn, jam_path(conn, :show, id))
-      assert json_response(conn, 200)["data"] == %{"id" => id, "title" => "some title"}
+
+      assert json_response(conn, 200)["data"] == %{
+               "id" => id,
+               "title" => "some title"
+             }
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -42,12 +46,19 @@ defmodule LivedubWeb.JamControllerTest do
   describe "update jam" do
     setup [:create_jam]
 
-    test "renders jam when data is valid", %{conn: conn, jam: %Jam{id: id} = jam} do
+    test "renders jam when data is valid", %{
+      conn: conn,
+      jam: %Jam{id: id} = jam
+    } do
       conn = put(conn, jam_path(conn, :update, jam), jam: @update_attrs)
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
       conn = get(conn, jam_path(conn, :show, id))
-      assert json_response(conn, 200)["data"] == %{"id" => id, "title" => "some updated title"}
+
+      assert json_response(conn, 200)["data"] == %{
+               "id" => id,
+               "title" => "some updated title"
+             }
     end
 
     test "renders errors when data is invalid", %{conn: conn, jam: jam} do

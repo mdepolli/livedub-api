@@ -4,7 +4,10 @@ defmodule LivedubWeb.UserControllerTest do
   alias Livedub.Accounts
   # alias Livedub.Accounts.User
 
-  @create_attrs %{email: "peter.potamus@example.com", password: "123 super secret"}
+  @create_attrs %{
+    email: "peter.potamus@example.com",
+    password: "123 super secret"
+  }
   # @update_attrs %{email: "updated@example.com"}
   @invalid_attrs %{email: nil, password: nil}
 

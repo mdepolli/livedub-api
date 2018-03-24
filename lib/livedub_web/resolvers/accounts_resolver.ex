@@ -14,7 +14,8 @@ defmodule LivedubWeb.AccountsResolver do
   end
 
   def login(_root, %{email: email, password: password}, _info) do
-    with {:ok, %User{} = user} <- Livedub.Accounts.get_user_and_verify_password(email, password),
+    with {:ok, %User{} = user} <-
+           Livedub.Accounts.get_user_and_verify_password(email, password),
          {:ok, jwt, _claims} <- Guardian.encode_and_sign(user, %{}, token_type: "access") do
       {:ok, %{token: jwt}}
     end

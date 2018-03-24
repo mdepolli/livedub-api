@@ -6,8 +6,14 @@ defmodule Livedub.AccountsTest do
   describe "users" do
     alias Livedub.Accounts.User
 
-    @valid_attrs %{email: "peter.potamus@example.com", password: "123 super secret"}
-    @update_attrs %{email: "updated@example.com", password: "some updated password"}
+    @valid_attrs %{
+      email: "peter.potamus@example.com",
+      password: "123 super secret"
+    }
+    @update_attrs %{
+      email: "updated@example.com",
+      password: "some updated password"
+    }
     @invalid_attrs %{email: nil, password: nil}
 
     def user_fixture(attrs \\ %{}) do
@@ -54,6 +60,7 @@ defmodule Livedub.AccountsTest do
       user = user_fixture()
 
       assert {:error, %Ecto.Changeset{}} = Accounts.update_user(user, @invalid_attrs)
+
       assert user == Accounts.get_user!(user.id)
     end
 

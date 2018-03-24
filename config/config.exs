@@ -6,16 +6,14 @@
 use Mix.Config
 
 # General application configuration
-config :livedub,
-  ecto_repos: [Livedub.Repo]
+config :livedub, ecto_repos: [Livedub.Repo]
 
 # Configures the endpoint
 config :livedub, LivedubWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "dTAe35lKpTfnKrz6L4UfgF0dSu3rEbFdPcVUyLQwjZRYvSfIr1Kh4QolGc0usbC9",
   render_errors: [view: LivedubWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Livedub.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: Livedub.PubSub, adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
 config :logger, :console,
@@ -24,7 +22,7 @@ config :logger, :console,
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
-import_config "#{Mix.env}.exs"
+import_config "#{Mix.env()}.exs"
 
 config :livedub, Livedub.Guardian,
   issuer: "Livedub",

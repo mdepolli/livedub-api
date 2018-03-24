@@ -107,7 +107,9 @@ defmodule Livedub.MusicTest do
 
     test "update_clip/2 with invalid data returns error changeset" do
       clip = clip_fixture()
+
       assert {:error, %Ecto.Changeset{}} = Music.update_clip(clip, @invalid_attrs)
+
       assert clip == Music.get_clip!(clip.id)
     end
 
@@ -165,7 +167,9 @@ defmodule Livedub.MusicTest do
 
     test "update_track/2 with invalid data returns error changeset" do
       track = track_fixture()
+
       assert {:error, %Ecto.Changeset{}} = Music.update_track(track, @invalid_attrs)
+
       assert track == Music.get_track!(track.id)
     end
 

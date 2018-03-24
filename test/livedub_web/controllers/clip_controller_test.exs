@@ -30,7 +30,11 @@ defmodule LivedubWeb.ClipControllerTest do
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
       conn = get(conn, clip_path(conn, :show, id))
-      assert json_response(conn, 200)["data"] == %{"id" => id, "url" => "some url"}
+
+      assert json_response(conn, 200)["data"] == %{
+               "id" => id,
+               "url" => "some url"
+             }
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -42,12 +46,19 @@ defmodule LivedubWeb.ClipControllerTest do
   describe "update clip" do
     setup [:create_clip]
 
-    test "renders clip when data is valid", %{conn: conn, clip: %Clip{id: id} = clip} do
+    test "renders clip when data is valid", %{
+      conn: conn,
+      clip: %Clip{id: id} = clip
+    } do
       conn = put(conn, clip_path(conn, :update, clip), clip: @update_attrs)
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
       conn = get(conn, clip_path(conn, :show, id))
-      assert json_response(conn, 200)["data"] == %{"id" => id, "url" => "some updated url"}
+
+      assert json_response(conn, 200)["data"] == %{
+               "id" => id,
+               "url" => "some updated url"
+             }
     end
 
     test "renders errors when data is invalid", %{conn: conn, clip: clip} do
