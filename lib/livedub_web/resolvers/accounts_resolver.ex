@@ -18,8 +18,8 @@ defmodule LivedubWeb.AccountsResolver do
          {:ok, jwt, _claims} <- Guardian.encode_and_sign(user, %{}, token_type: "access") do
       {:ok, %{user: user, access_token: jwt}}
     else
-      {:error, changeset} ->
-        {:error, message: "Could not log in", details: error_details(changeset)}
+      {:error, _} ->
+        {:error, message: "Email or password not recognized"}
     end
   end
 
