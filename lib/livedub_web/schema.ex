@@ -5,7 +5,7 @@ defmodule LivedubWeb.Schema do
 
   object :session do
     field(:user, non_null(:user))
-    field(:access_token, :string)
+    field(:access_token, non_null(:string))
   end
 
   object :user do
