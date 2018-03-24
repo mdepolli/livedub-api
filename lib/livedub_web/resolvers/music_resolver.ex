@@ -6,26 +6,14 @@ defmodule LivedubWeb.MusicResolver do
     {:ok, jams}
   end
 
-  def all_jams(_root, _args, _info) do
-    {:error, "Unauthorized"}
-  end
-
   def all_tracks(_root, _args, %{context: %{current_user: current_user}}) do
     tracks = Music.list_tracks_for_user(current_user)
     {:ok, tracks}
   end
 
-  def all_tracks(_root, _args, _info) do
-    {:error, "Unauthorized"}
-  end
-
   def all_clips(_root, _args, %{context: %{current_user: current_user}}) do
     clips = Music.list_clips_for_user(current_user)
     {:ok, clips}
-  end
-
-  def all_clips(_root, _args, _info) do
-    {:error, "Unauthorized"}
   end
 
   def create_jam(_root, %{title: title}, %{context: %{current_user: current_user}}) do
@@ -34,20 +22,12 @@ defmodule LivedubWeb.MusicResolver do
     end
   end
 
-  def create_jam(_root, _args, _info) do
-    {:error, "Unauthorized"}
-  end
-
   def join_jam(_root, %{jam_id: jam_id}, %{context: %{current_user: current_user}}) do
     jam = Music.get_jam!(jam_id)
 
     with {:ok, %Jam{} = jam} <- Music.join_jam(jam, current_user) do
       {:ok, jam}
     end
-  end
-
-  def join_jam(_root, _args, _info) do
-    {:error, "Unauthorized"}
   end
 
   def create_track(_root, %{jam_id: jam_id}, %{
@@ -60,18 +40,9 @@ defmodule LivedubWeb.MusicResolver do
     end
   end
 
-  def create_track(_root, _args, _info) do
-    {:error, "Unauthorized"}
-  end
-
   def create_clip(
         _root,
-        %{
-          track_id: track_id,
-          url: url,
-          start_time: start_time,
-          duration: duration
-        },
+        %{track_id: track_id, url: url, start_time: start_time, duration: duration},
         %{context: %{current_user: current_user}}
       ) do
     track = Music.get_track!(track_id)
@@ -84,9 +55,5 @@ defmodule LivedubWeb.MusicResolver do
            }) do
       {:ok, clip}
     end
-  end
-
-  def create_clip(_root, _args, _info) do
-    {:error, "Unauthorized"}
   end
 end

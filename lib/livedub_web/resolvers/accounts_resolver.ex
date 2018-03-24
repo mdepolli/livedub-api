@@ -1,8 +1,6 @@
 defmodule LivedubWeb.AccountsResolver do
   alias Livedub.{Accounts, Accounts.User, Guardian}
 
-  ###### PUBLIC RESOLVERS ######
-
   def sign_up(_root, args, _info) do
     with {:ok, %User{} = user} <- Accounts.create_user(args),
          {:ok, jwt, _claims} <- Guardian.encode_and_sign(user, %{}, token_type: "access") do
@@ -21,17 +19,6 @@ defmodule LivedubWeb.AccountsResolver do
       {:error, _} ->
         {:error, message: "Email or password not recognized"}
     end
-  end
-
-  ###### RESTRICTED RESOLVERS ######
-
-  def all_users(_root, _args, %{context: %{current_user: _current_user}}) do
-    users = Accounts.list_users()
-    {:ok, users}
-  end
-
-  def all_users(_root, _args, _info) do
-    {:error, "Unauthorized"}
   end
 
   defp error_details(changeset) do

@@ -38,24 +38,24 @@ defmodule LivedubWeb.Schema do
   end
 
   query do
-    field :all_users, list_of(non_null(:user)) do
-      resolve(&AccountsResolver.all_users/3)
-    end
-
     field :all_jams, list_of(non_null(:jam)) do
+      middleware(LivedubWeb.Middleware.Auth)
       resolve(&MusicResolver.all_jams/3)
     end
 
     field :all_tracks, list_of(non_null(:track)) do
+      middleware(LivedubWeb.Middleware.Auth)
       resolve(&MusicResolver.all_tracks/3)
     end
 
     field :all_clips, list_of(non_null(:clip)) do
+      middleware(LivedubWeb.Middleware.Auth)
       resolve(&MusicResolver.all_clips/3)
     end
   end
 
   mutation do
+    # Unrestricted mutation
     field :sign_up, type: :session do
       arg(:email, non_null(:string))
       arg(:password, non_null(:string))
@@ -63,6 +63,7 @@ defmodule LivedubWeb.Schema do
       resolve(&AccountsResolver.sign_up/3)
     end
 
+    # Unrestricted mutation
     field :sign_in, type: :session do
       arg(:email, non_null(:string))
       arg(:password, non_null(:string))
@@ -73,18 +74,21 @@ defmodule LivedubWeb.Schema do
     field :create_jam, type: :jam do
       arg(:title, non_null(:string))
 
+      middleware(LivedubWeb.Middleware.Auth)
       resolve(&MusicResolver.create_jam/3)
     end
 
     field :join_jam, type: :jam do
       arg(:jam_id, non_null(:id))
 
+      middleware(LivedubWeb.Middleware.Auth)
       resolve(&MusicResolver.join_jam/3)
     end
 
     field :create_track, type: :track do
       arg(:jam_id, non_null(:id))
 
+      middleware(LivedubWeb.Middleware.Auth)
       resolve(&MusicResolver.create_track/3)
     end
 
@@ -94,6 +98,7 @@ defmodule LivedubWeb.Schema do
       arg(:start_time, non_null(:float))
       arg(:duration, non_null(:float))
 
+      middleware(LivedubWeb.Middleware.Auth)
       resolve(&MusicResolver.create_clip/3)
     end
   end
