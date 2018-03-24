@@ -4,6 +4,7 @@ defmodule LivedubWeb.Schema do
   alias LivedubWeb.{AccountsResolver, MusicResolver}
 
   object :session do
+    field(:user, non_null(:user))
     field(:token, :string)
   end
 
