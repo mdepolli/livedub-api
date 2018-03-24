@@ -36,11 +36,6 @@ defmodule LivedubWeb.Router do
   scope "/graphiql" do
     pipe_through(:authorized)
 
-    forward(
-      "/",
-      Absinthe.Plug.GraphiQL,
-      schema: LivedubWeb.Schema,
-      interface: :advanced
-    )
+    forward("/", Absinthe.Plug.GraphiQL, schema: LivedubWeb.Schema, interface: :advanced)
   end
 end
