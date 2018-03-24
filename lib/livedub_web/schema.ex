@@ -1,5 +1,6 @@
 defmodule LivedubWeb.Schema do
   use Absinthe.Schema
+  use Absinthe.Ecto, repo: Livedub.Repo
 
   alias LivedubWeb.{AccountsResolver, MusicResolver}
 
@@ -16,13 +17,15 @@ defmodule LivedubWeb.Schema do
   object :jam do
     field(:id, non_null(:id))
     field(:title, non_null(:string))
-    field(:users, list_of(non_null(:user)))
+    field(:users, list_of(non_null(:user)), resolve: assoc(:users))
+    field(:tracks, list_of(non_null(:track)), resolve: assoc(:tracks))
   end
 
   object :track do
     field(:id, non_null(:id))
     field(:user_id, non_null(:id))
     field(:jam_id, non_null(:id))
+    field(:clips, list_of(non_null(:clip)), resolve: assoc(:clips))
   end
 
   object :clip do
