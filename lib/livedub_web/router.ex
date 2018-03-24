@@ -26,17 +26,21 @@ defmodule LivedubWeb.Router do
     plug(LivedubWeb.Context)
   end
 
-  scope "/api" do
+  scope "/graphql" do
     pipe_through(:api)
     pipe_through(:authorized)
 
     forward("/", Absinthe.Plug, schema: LivedubWeb.Schema)
   end
 
-  forward(
-    "/graphiql",
-    Absinthe.Plug.GraphiQL,
-    schema: LivedubWeb.Schema,
-    interface: :simple
-  )
+  scope "/graphiql" do
+    pipe_through(:authorized)
+
+    forward(
+      "/",
+      Absinthe.Plug.GraphiQL,
+      schema: LivedubWeb.Schema,
+      interface: :advanced
+    )
+  end
 end
