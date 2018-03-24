@@ -5,18 +5,12 @@ defmodule LivedubWeb.Schema do
 
   object :session do
     field(:user, non_null(:user))
-    field(:token, :string)
+    field(:access_token, :string)
   end
 
   object :user do
     field(:id, non_null(:id))
     field(:email, non_null(:string))
-  end
-
-  object :user_for_signup do
-    field(:id, non_null(:id))
-    field(:email, non_null(:string))
-    field(:token, :string)
   end
 
   object :jam do
@@ -59,18 +53,18 @@ defmodule LivedubWeb.Schema do
   end
 
   mutation do
-    field :login, type: :session do
+    field :sign_up, type: :session do
       arg(:email, non_null(:string))
       arg(:password, non_null(:string))
 
-      resolve(&AccountsResolver.login/3)
+      resolve(&AccountsResolver.sign_up/3)
     end
 
-    field :create_user, type: :user_for_signup do
+    field :sign_in, type: :session do
       arg(:email, non_null(:string))
       arg(:password, non_null(:string))
 
-      resolve(&AccountsResolver.create_user/3)
+      resolve(&AccountsResolver.sign_in/3)
     end
 
     field :create_jam, type: :jam do
