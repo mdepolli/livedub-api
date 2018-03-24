@@ -81,7 +81,7 @@ defmodule Livedub.Music do
     |> Repo.update()
   end
 
-  def add_user_to_jam(%Jam{} = jam, %User{} = user) do
+  def join_jam(%Jam{} = jam, %User{} = user) do
     jam
     |> Jam.add_user_changeset(user)
     |> Repo.update()

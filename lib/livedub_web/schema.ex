@@ -73,10 +73,10 @@ defmodule LivedubWeb.Schema do
       resolve(&MusicResolver.create_jam/3)
     end
 
-    field :add_user_to_jam, type: :jam do
+    field :join_jam, type: :jam do
       arg(:jam_id, non_null(:integer))
 
-      resolve(&MusicResolver.add_user_to_jam/3)
+      resolve(&MusicResolver.join_jam/3)
     end
 
     field :create_track, type: :track do
