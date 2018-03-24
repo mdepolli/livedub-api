@@ -21,8 +21,8 @@ defmodule LivedubWeb.Schema do
 
   object :track do
     field(:id, non_null(:id))
-    field(:user_id, non_null(:integer))
-    field(:jam_id, non_null(:integer))
+    field(:user_id, non_null(:id))
+    field(:jam_id, non_null(:id))
   end
 
   object :clip do
@@ -30,8 +30,8 @@ defmodule LivedubWeb.Schema do
     field(:url, :string)
     field(:start_time, :float)
     field(:duration, :float)
-    field(:user_id, non_null(:integer))
-    field(:track_id, non_null(:integer))
+    field(:user_id, non_null(:id))
+    field(:track_id, non_null(:id))
   end
 
   query do
