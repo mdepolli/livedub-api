@@ -12,9 +12,15 @@ defmodule LivedubWeb.Schema do
     field(:email, non_null(:string))
   end
 
+  object :user_for_signup do
+    field(:id, non_null(:id))
+    field(:email, non_null(:string))
+    field(:token, :string)
+  end
+
   object :jam do
     field(:id, non_null(:id))
-    field(:title, :string)
+    field(:title, non_null(:string))
     field(:users, list_of(non_null(:user)))
   end
 
@@ -59,7 +65,7 @@ defmodule LivedubWeb.Schema do
       resolve(&AccountsResolver.login/3)
     end
 
-    field :create_user, type: :user do
+    field :create_user, type: :user_for_signup do
       arg(:email, non_null(:string))
       arg(:password, non_null(:string))
 
@@ -67,7 +73,7 @@ defmodule LivedubWeb.Schema do
     end
 
     field :create_jam, type: :jam do
-      arg(:title, :string)
+      arg(:title, non_null(:string))
 
       resolve(&MusicResolver.create_jam/3)
     end

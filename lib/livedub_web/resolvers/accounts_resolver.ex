@@ -4,20 +4,22 @@ defmodule LivedubWeb.AccountsResolver do
   ###### PUBLIC RESOLVERS ######
 
   def create_user(_root, args, _info) do
-    case Accounts.create_user(args) do
-      {:ok, user} ->
-        {:ok, user}
-
-      _error ->
-        {:error, "Could not create user"}
+    with {:ok, user} <- Accounts.create_user(args),
+         {:ok, jwt, _claims} <- Guardian.encode_and_sign(user, %{}, token_type: "access") do
+      {:ok, %{id: user.id, email: user.email, token: jwt}}
+    else
+      {:error, changeset} ->
+        {:error, message: "Could not create user", details: error_details(changeset)}
     end
   end
 
   def login(_root, %{email: email, password: password}, _info) do
-    with {:ok, %User{} = user} <-
-           Livedub.Accounts.get_user_and_verify_password(email, password),
+    with {:ok, %User{} = user} <- Accounts.get_user_and_verify_password(email, password),
          {:ok, jwt, _claims} <- Guardian.encode_and_sign(user, %{}, token_type: "access") do
       {:ok, %{token: jwt}}
+    else
+      {:error, changeset} ->
+        {:error, message: "Could not log in", details: error_details(changeset)}
     end
   end
 
@@ -30,5 +32,10 @@ defmodule LivedubWeb.AccountsResolver do
 
   def all_users(_root, _args, _info) do
     {:error, "Unauthorized"}
+  end
+
+  defp error_details(changeset) do
+    changeset
+    |> Ecto.Changeset.traverse_errors(fn {msg, _} -> msg end)
   end
 end
