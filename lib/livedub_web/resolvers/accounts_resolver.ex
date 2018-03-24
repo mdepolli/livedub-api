@@ -6,7 +6,7 @@ defmodule LivedubWeb.AccountsResolver do
   def sign_up(_root, args, _info) do
     with {:ok, %User{} = user} <- Accounts.create_user(args),
          {:ok, jwt, _claims} <- Guardian.encode_and_sign(user, %{}, token_type: "access") do
-      {:ok, %{id: user.id, email: user.email, access_token: jwt}}
+      {:ok, %{user: user, access_token: jwt}}
     else
       {:error, changeset} ->
         {:error, message: "Could not create user", details: error_details(changeset)}
@@ -16,7 +16,7 @@ defmodule LivedubWeb.AccountsResolver do
   def sign_in(_root, %{email: email, password: password}, _info) do
     with {:ok, %User{} = user} <- Accounts.get_user_and_verify_password(email, password),
          {:ok, jwt, _claims} <- Guardian.encode_and_sign(user, %{}, token_type: "access") do
-      {:ok, %{id: user.id, email: user.email, access_token: jwt}}
+      {:ok, %{user: user, access_token: jwt}}
     else
       {:error, changeset} ->
         {:error, message: "Could not log in", details: error_details(changeset)}
