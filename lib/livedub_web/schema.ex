@@ -74,19 +74,19 @@ defmodule LivedubWeb.Schema do
     end
 
     field :join_jam, type: :jam do
-      arg(:jam_id, non_null(:integer))
+      arg(:jam_id, non_null(:id))
 
       resolve(&MusicResolver.join_jam/3)
     end
 
     field :create_track, type: :track do
-      arg(:jam_id, non_null(:integer))
+      arg(:jam_id, non_null(:id))
 
       resolve(&MusicResolver.create_track/3)
     end
 
     field :create_clip, type: :clip do
-      arg(:track_id, non_null(:integer))
+      arg(:track_id, non_null(:id))
       arg(:url, non_null(:string))
       arg(:start_time, non_null(:float))
       arg(:duration, non_null(:float))
