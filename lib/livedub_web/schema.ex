@@ -43,6 +43,13 @@ defmodule LivedubWeb.Schema do
       resolve(&MusicResolver.all_jams/3)
     end
 
+    field :get_jam, :jam do
+      arg(:jam_id, non_null(:id))
+
+      middleware(LivedubWeb.Middleware.Auth)
+      resolve(&MusicResolver.get_jam/3)
+    end
+
     field :all_tracks, list_of(non_null(:track)) do
       middleware(LivedubWeb.Middleware.Auth)
       resolve(&MusicResolver.all_tracks/3)

@@ -43,6 +43,8 @@ defmodule Livedub.Music do
   """
   def get_jam!(id), do: Repo.get!(Jam, id)
 
+  def get_jam(id), do: Repo.get(Jam, id)
+
   @doc """
   Creates a jam.
 

@@ -6,6 +6,16 @@ defmodule LivedubWeb.MusicResolver do
     {:ok, jams}
   end
 
+  def get_jam(_root, %{jam_id: jam_id}, %{context: %{current_user: current_user}}) do
+    with %Jam{} = jam <- Music.get_jam(jam_id),
+         jams <- Music.list_jams_for_user(current_user),
+         true <- jam in jams do
+      {:ok, jam}
+    else
+      _ -> {:error, message: "Jam doesn't exist for this user"}
+    end
+  end
+
   def all_tracks(_root, _args, %{context: %{current_user: current_user}}) do
     tracks = Music.list_tracks_for_user(current_user)
     {:ok, tracks}
