@@ -28,6 +28,7 @@ defmodule LivedubWeb.Schema do
     field(:id, non_null(:id))
     field(:user_id, non_null(:id))
     field(:jam_id, non_null(:id))
+    field(:title, non_null(:string))
     field(:clips, list_of(non_null(:clip)), resolve: assoc(:clips))
   end
 

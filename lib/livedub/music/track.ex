@@ -12,7 +12,7 @@ defmodule Livedub.Music.Track do
     timestamps()
   end
 
-  @required_fields ~w(user_id jam_id)a
+  @required_fields ~w(user_id jam_id title)a
   @all_fields ~w()a ++ @required_fields
 
   @doc false
