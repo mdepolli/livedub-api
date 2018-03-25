@@ -3,7 +3,7 @@ defmodule Livedub.Repo.Migrations.AddFullNameToUsers do
 
   def change do
     alter table(:users) do
-      add :full_name, :string, null: false
+      add :full_name, :string, default: "", null: false
     end
   end
 end
