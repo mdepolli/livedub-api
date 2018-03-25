@@ -12,6 +12,7 @@ defmodule LivedubWeb.Schema do
   object :user do
     field(:id, non_null(:id))
     field(:email, non_null(:string))
+    field(:full_name, non_null(:string))
   end
 
   object :jam do
