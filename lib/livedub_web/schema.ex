@@ -70,6 +70,7 @@ defmodule LivedubWeb.Schema do
     field :sign_up, type: :session do
       arg(:email, non_null(:string))
       arg(:password, non_null(:string))
+      arg(:full_name, non_null(:string))
 
       resolve(&AccountsResolver.sign_up/3)
     end
