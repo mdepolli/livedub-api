@@ -5,6 +5,7 @@ defmodule Livedub.Repo.Migrations.CreateUsers do
     create table(:users) do
       add :email, :string, null: false
       add :password_hash, :string, null: false
+      add :full_name, :string, default: "", null: false
 
       timestamps()
     end

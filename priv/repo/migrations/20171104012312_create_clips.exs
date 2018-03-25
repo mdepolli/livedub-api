@@ -5,8 +5,9 @@ defmodule Livedub.Repo.Migrations.CreateClips do
     create table(:clips) do
       add :url, :string, null: false
       add :start_time, :float, null: false
-      add :user_id, references(:users, on_delete: :nothing), null: false
-      add :jam_id, references(:jams, on_delete: :nothing), null: false
+      add :duration, :float, null: false, default: 0.0
+      add :recorded_at, :utc_datetime, null: false
+      add :track_id, references(:tracks, on_delete: :delete_all), null: false
 
       timestamps()
     end
