@@ -21,6 +21,16 @@ defmodule LivedubWeb.AccountsResolver do
     end
   end
 
+  def update_profile(_root, args, %{context: %{current_user: current_user}}) do
+    case Accounts.update_user(current_user, args) do
+      {:ok, user} ->
+        {:ok, user}
+
+      {:error, changeset} ->
+        {:error, message: "Could not create user", details: error_details(changeset)}
+    end
+  end
+
   defp error_details(changeset) do
     changeset
     |> Ecto.Changeset.traverse_errors(fn {msg, _} -> msg end)

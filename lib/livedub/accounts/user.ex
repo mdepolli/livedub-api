@@ -15,14 +15,11 @@ defmodule Livedub.Accounts.User do
     timestamps()
   end
 
-  @required_fields ~w(email full_name)a
-  @all_fields ~w()a ++ @required_fields
-
   @doc false
   def changeset(%User{} = user, attrs) do
     user
-    |> cast(attrs, @all_fields)
-    |> validate_required(@required_fields)
+    |> cast(attrs, ~w(email full_name)a)
+    |> validate_required(~w(email full_name)a)
     |> validate_length(:email, min: 1, max: 255)
     |> validate_format(:email, ~r/@/)
     |> unique_constraint(:email)
@@ -33,6 +30,14 @@ defmodule Livedub.Accounts.User do
     user
     |> changeset(attrs)
     |> cast(attrs, ~w(password)a)
+    |> validate_length(:password, min: 6, max: 100)
+    |> put_password_hash()
+  end
+
+  @doc false
+  def update_changeset(%User{} = user, attrs) do
+    user
+    |> cast(attrs, ~w(full_name password)a)
     |> validate_length(:password, min: 6, max: 100)
     |> put_password_hash()
   end
