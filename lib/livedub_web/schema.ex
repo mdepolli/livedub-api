@@ -4,6 +4,8 @@ defmodule LivedubWeb.Schema do
 
   alias LivedubWeb.{AccountsResolver, MusicResolver}
 
+  import_types Absinthe.Type.Custom
+
   object :session do
     field(:user, non_null(:user))
     field(:access_token, non_null(:string))
@@ -36,6 +38,7 @@ defmodule LivedubWeb.Schema do
     field(:duration, non_null(:float))
     field(:user_id, non_null(:id))
     field(:track_id, non_null(:id))
+    field(:inserted_at, non_null(:datetime))
   end
 
   query do
