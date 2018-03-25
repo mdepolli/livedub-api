@@ -11,14 +11,7 @@ config :livedub, LivedubWeb.Endpoint,
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
-  watchers: [
-    node: [
-      "node_modules/brunch/bin/brunch",
-      "watch",
-      "--stdin",
-      cd: Path.expand("../assets", __DIR__)
-    ]
-  ]
+  watchers: []
 
 # ## SSL Support
 #
@@ -35,17 +28,6 @@ config :livedub, LivedubWeb.Endpoint,
 # If desired, both `http:` and `https:` keys can be
 # configured to run both http and https servers on
 # different ports.
-
-# Watch static and templates for browser reloading.
-config :livedub, LivedubWeb.Endpoint,
-  live_reload: [
-    patterns: [
-      ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
-      ~r{priv/gettext/.*(po)$},
-      ~r{lib/livedub_web/views/.*(ex)$},
-      ~r{lib/livedub_web/templates/.*(eex)$}
-    ]
-  ]
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
