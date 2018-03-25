@@ -4,7 +4,7 @@ defmodule LivedubWeb.Schema do
 
   alias LivedubWeb.{AccountsResolver, MusicResolver}
 
-  import_types Absinthe.Type.Custom
+  import_types(Absinthe.Type.Custom)
 
   object :session do
     field(:user, non_null(:user))
