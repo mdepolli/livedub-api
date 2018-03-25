@@ -84,12 +84,12 @@ defmodule LivedubWeb.Schema do
       resolve(&AccountsResolver.sign_in/3)
     end
 
-    field :update_profile, type: :user do
+    field :update_user, type: :user do
       arg(:full_name, :string)
       arg(:password, :string)
 
       middleware(LivedubWeb.Middleware.Auth)
-      resolve(&AccountsResolver.update_profile/3)
+      resolve(&AccountsResolver.update_user/3)
     end
 
     field :create_jam, type: :jam do

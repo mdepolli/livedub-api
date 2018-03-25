@@ -21,7 +21,7 @@ defmodule LivedubWeb.AccountsResolver do
     end
   end
 
-  def update_profile(_root, args, %{context: %{current_user: current_user}}) do
+  def update_user(_root, args, %{context: %{current_user: current_user}}) do
     case Accounts.update_user(current_user, args) do
       {:ok, user} ->
         {:ok, user}
