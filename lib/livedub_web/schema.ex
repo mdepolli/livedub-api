@@ -34,12 +34,12 @@ defmodule LivedubWeb.Schema do
 
   object :clip do
     field(:id, non_null(:id))
+    field(:user_id, non_null(:id))
+    field(:track_id, non_null(:id))
+    field(:recorded_at, non_null(:datetime))
     field(:url, non_null(:string))
     field(:start_time, non_null(:float))
     field(:duration, non_null(:float))
-    field(:user_id, non_null(:id))
-    field(:track_id, non_null(:id))
-    field(:inserted_at, non_null(:datetime))
   end
 
   query do
@@ -107,6 +107,7 @@ defmodule LivedubWeb.Schema do
 
     field :create_clip, type: :clip do
       arg(:track_id, non_null(:id))
+      arg(:recorded_at, non_null(:datetime))
       arg(:url, non_null(:string))
       arg(:start_time, non_null(:float))
       arg(:duration, non_null(:float))
