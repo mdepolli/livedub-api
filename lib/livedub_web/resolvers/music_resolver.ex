@@ -41,12 +41,11 @@ defmodule LivedubWeb.MusicResolver do
     {:ok, tracks}
   end
 
-  def create_track(_root, %{jam_id: jam_id}, %{
+  def create_track(_root, args = %{jam_id: jam_id, title: _title}, %{
         context: %{current_user: current_user}
       }) do
-    jam = Music.get_jam!(jam_id)
-
-    with {:ok, %Track{} = track} <- Music.create_track(current_user, jam) do
+    with %Jam{} = _jam <- Music.get_jam(jam_id),
+         {:ok, %Track{} = track} <- Music.create_track(current_user, args) do
       {:ok, track}
     end
   end
