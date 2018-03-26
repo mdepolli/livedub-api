@@ -20,8 +20,8 @@ defmodule LivedubWeb.Schema do
   object :jam do
     field(:id, non_null(:id))
     field(:title, non_null(:string))
-    field(:users, list_of(non_null(:user)), resolve: assoc(:users))
-    field(:tracks, list_of(non_null(:track)), resolve: assoc(:tracks))
+    field(:users, non_null(list_of(non_null(:user))), resolve: assoc(:users))
+    field(:tracks, non_null(list_of(non_null(:track))), resolve: assoc(:tracks))
   end
 
   object :track do
