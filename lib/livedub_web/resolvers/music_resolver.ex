@@ -7,23 +7,11 @@ defmodule LivedubWeb.MusicResolver do
   end
 
   def get_jam(_root, %{jam_id: jam_id}, %{context: %{current_user: current_user}}) do
-    with %Jam{} = jam <- Music.get_jam(jam_id),
-         jams <- Music.list_jams_for_user(current_user),
-         true <- jam in jams do
+    with {:ok, %Jam{} = jam} <- Music.get_jam_for_user(jam_id, current_user) do
       {:ok, jam}
     else
-      _ -> {:error, message: "Jam doesn't exist for this user"}
+      {:error, message} -> {:error, message: message}
     end
-  end
-
-  def all_tracks(_root, _args, %{context: %{current_user: current_user}}) do
-    tracks = Music.list_tracks_for_user(current_user)
-    {:ok, tracks}
-  end
-
-  def all_clips(_root, _args, %{context: %{current_user: current_user}}) do
-    clips = Music.list_clips_for_user(current_user)
-    {:ok, clips}
   end
 
   def create_jam(_root, %{title: title}, %{context: %{current_user: current_user}}) do
@@ -38,6 +26,24 @@ defmodule LivedubWeb.MusicResolver do
     with {:ok, %Jam{} = jam} <- Music.join_jam(jam, current_user) do
       {:ok, jam}
     end
+  end
+
+  def delete_jam(_root, %{jam_id: jam_id}, %{context: %{current_user: current_user}}) do
+    with {:ok, %Jam{} = jam} <- Music.delete_jam_for_user(jam_id, current_user) do
+      {:ok, jam}
+    else
+      {:error, message} -> {:error, message: message}
+    end
+  end
+
+  def all_tracks(_root, _args, %{context: %{current_user: current_user}}) do
+    tracks = Music.list_tracks_for_user(current_user)
+    {:ok, tracks}
+  end
+
+  def all_clips(_root, _args, %{context: %{current_user: current_user}}) do
+    clips = Music.list_clips_for_user(current_user)
+    {:ok, clips}
   end
 
   def create_track(_root, %{jam_id: jam_id}, %{
