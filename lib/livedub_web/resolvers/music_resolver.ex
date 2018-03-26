@@ -17,6 +17,9 @@ defmodule LivedubWeb.MusicResolver do
   def create_jam(_root, %{title: title}, %{context: %{current_user: current_user}}) do
     with {:ok, %Jam{} = jam} <- Music.create_jam(current_user, %{title: title}) do
       {:ok, jam}
+    else
+      {:error, changeset} ->
+        {:error, message: "Could not create jam", details: error_details(changeset)}
     end
   end
 
@@ -47,6 +50,9 @@ defmodule LivedubWeb.MusicResolver do
     with %Jam{} = _jam <- Music.get_jam(jam_id),
          {:ok, %Track{} = track} <- Music.create_track(current_user, args) do
       {:ok, track}
+    else
+      {:error, changeset} ->
+        {:error, message: "Could not create track", details: error_details(changeset)}
     end
   end
 
@@ -79,6 +85,14 @@ defmodule LivedubWeb.MusicResolver do
              duration: duration
            }) do
       {:ok, clip}
+    else
+      {:error, changeset} ->
+        {:error, message: "Could not create clip", details: error_details(changeset)}
     end
+  end
+
+  defp error_details(changeset) do
+    changeset
+    |> Ecto.Changeset.traverse_errors(fn {msg, _} -> msg end)
   end
 end
