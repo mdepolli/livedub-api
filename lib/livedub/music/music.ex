@@ -5,7 +5,7 @@ defmodule Livedub.Music do
 
   import Ecto.Query, warn: false
 
-  alias Livedub.{Repo, Accounts.User, Music.Jam, Music.Track, Music.Clip}
+  alias Livedub.{Repo, Accounts.User, Music.Jam, Music.Track, Music.Clip, Music.JamUser}
 
   @doc """
   Returns the list of jams.
@@ -100,6 +100,18 @@ defmodule Livedub.Music do
     |> Repo.update()
   end
 
+  def remove_user_from_jam(%Jam{} = jam, %User{} = user) do
+    jams = list_jams_for_user(user)
+
+    if jam in jams do
+      JamUser
+      |> Repo.get_by(jam_id: jam.id, user_id: user.id)
+      |> Repo.delete()
+    else
+      {:error, "Jam doesn't exist for this user"}
+    end
+  end
+
   @doc """
   Deletes a Jam.
 
@@ -116,7 +128,7 @@ defmodule Livedub.Music do
     Repo.delete(jam)
   end
 
-  def delete_jam_for_user(jam_id, user) do
+  def delete_jam_for_user(jam_id, %User{} = user) do
     jam = get_jam(jam_id)
     jams = list_jams_for_user(user)
 

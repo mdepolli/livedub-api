@@ -1,5 +1,5 @@
 defmodule LivedubWeb.MusicResolver do
-  alias Livedub.{Music, Music.Jam, Music.Track, Music.Clip}
+  alias Livedub.{Accounts, Accounts.User, Music, Music.Jam, Music.Track, Music.Clip}
 
   def all_jams(_root, _args, %{context: %{current_user: current_user}}) do
     jams = Music.list_jams_for_user(current_user)
@@ -28,6 +28,20 @@ defmodule LivedubWeb.MusicResolver do
 
     with {:ok, %Jam{} = jam} <- Music.join_jam(jam, current_user) do
       {:ok, jam}
+    end
+  end
+
+  def remove_user_from_jam(_root, %{jam_id: jam_id, user_id: user_id}, %{
+        context: %{current_user: current_user}
+      }) do
+    with jams <- Music.list_jams_for_user(current_user),
+         %Jam{} = jam <- Music.get_jam(jam_id),
+         true <- jam in jams,
+         %User{} = user <- Accounts.get_user(user_id),
+         {:ok, _result} <- Music.remove_user_from_jam(jam, user) do
+      {:ok, jam}
+    else
+      _ -> {:error, message: "Could not remove user from jam"}
     end
   end
 
