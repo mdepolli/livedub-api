@@ -12,7 +12,6 @@ defmodule Livedub.Repo.Migrations.CreateClips do
       timestamps()
     end
 
-    create index(:clips, [:user_id])
-    create index(:clips, [:jam_id])
+    create index(:clips, [:track_id])
   end
 end
