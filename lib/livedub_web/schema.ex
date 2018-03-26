@@ -115,6 +115,7 @@ defmodule LivedubWeb.Schema do
 
     field :create_track, type: :track do
       arg(:jam_id, non_null(:id))
+      arg(:title, non_null(:string))
 
       middleware(LivedubWeb.Middleware.Auth)
       resolve(&MusicResolver.create_track/3)
