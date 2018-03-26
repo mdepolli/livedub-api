@@ -120,6 +120,13 @@ defmodule LivedubWeb.Schema do
       resolve(&MusicResolver.create_track/3)
     end
 
+    field :delete_track, type: :track do
+      arg(:track_id, non_null(:id))
+
+      middleware(LivedubWeb.Middleware.Auth)
+      resolve(&MusicResolver.delete_track/3)
+    end
+
     field :create_clip, type: :clip do
       arg(:track_id, non_null(:id))
       arg(:recorded_at, non_null(:datetime))

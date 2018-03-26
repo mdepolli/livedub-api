@@ -41,11 +41,6 @@ defmodule LivedubWeb.MusicResolver do
     {:ok, tracks}
   end
 
-  def all_clips(_root, _args, %{context: %{current_user: current_user}}) do
-    clips = Music.list_clips_for_user(current_user)
-    {:ok, clips}
-  end
-
   def create_track(_root, %{jam_id: jam_id}, %{
         context: %{current_user: current_user}
       }) do
@@ -54,6 +49,21 @@ defmodule LivedubWeb.MusicResolver do
     with {:ok, %Track{} = track} <- Music.create_track(current_user, jam) do
       {:ok, track}
     end
+  end
+
+  def delete_track(_root, %{track_id: track_id}, %{context: %{current_user: current_user}}) do
+    with %Track{} = track <- Music.get_track(track_id),
+         ^current_user <- Livedub.Repo.preload(track, :user).user,
+         {:ok, %Track{} = track} <- Music.delete_track(track) do
+      {:ok, track}
+    else
+      {:error, message} -> {:error, message: message}
+    end
+  end
+
+  def all_clips(_root, _args, %{context: %{current_user: current_user}}) do
+    clips = Music.list_clips_for_user(current_user)
+    {:ok, clips}
   end
 
   def create_clip(

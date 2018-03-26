@@ -175,6 +175,8 @@ defmodule Livedub.Music do
   """
   def get_track!(id), do: Repo.get!(Track, id)
 
+  def get_track(id), do: Repo.get(Track, id)
+
   @doc """
   Creates a track.
 
