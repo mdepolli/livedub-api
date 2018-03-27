@@ -34,7 +34,6 @@ defmodule LivedubWeb.Schema do
 
   object :clip do
     field(:id, non_null(:id))
-    field(:user_id, non_null(:id))
     field(:track_id, non_null(:id))
     field(:url, non_null(:string))
     field(:start_time, non_null(:float))
