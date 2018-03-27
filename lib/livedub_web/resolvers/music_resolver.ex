@@ -85,19 +85,10 @@ defmodule LivedubWeb.MusicResolver do
     {:ok, clips}
   end
 
-  def create_clip(
-        _root,
-        %{track_id: track_id, url: url, start_time: start_time, duration: duration},
-        %{context: %{current_user: current_user}}
-      ) do
-    track = Music.get_track!(track_id)
+  def create_clip(_root, args, %{context: %{current_user: current_user}}) do
+    track = Music.get_track!(args[:track_id])
 
-    with {:ok, %Clip{} = clip} <-
-           Music.create_clip(current_user, track, %{
-             url: url,
-             start_time: start_time,
-             duration: duration
-           }) do
+    with {:ok, %Clip{} = clip} <- Music.create_clip(current_user, track, args) do
       {:ok, clip}
     else
       {:error, changeset} ->
