@@ -36,10 +36,10 @@ defmodule LivedubWeb.Schema do
     field(:id, non_null(:id))
     field(:user_id, non_null(:id))
     field(:track_id, non_null(:id))
-    field(:recorded_at, non_null(:datetime))
     field(:url, non_null(:string))
     field(:start_time, non_null(:float))
     field(:duration, non_null(:float))
+    field(:recorded_at, non_null(:datetime))
   end
 
   query do
