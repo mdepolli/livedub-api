@@ -128,6 +128,14 @@ defmodule LivedubWeb.Schema do
       resolve(&MusicResolver.create_track/3)
     end
 
+    field :update_track, type: :track do
+      arg(:track_id, non_null(:id))
+      arg(:title, non_null(:string))
+
+      middleware(LivedubWeb.Middleware.Auth)
+      resolve(&MusicResolver.update_track/3)
+    end
+
     field :delete_track, type: :track do
       arg(:track_id, non_null(:id))
 
