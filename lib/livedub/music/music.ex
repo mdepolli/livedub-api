@@ -227,6 +227,11 @@ defmodule Livedub.Music do
     |> Repo.update()
   end
 
+  def check_authorization_for_track(%Track{} = track, %User{} = current_user) do
+    jam = track |> Ecto.assoc(:jam) |> Livedub.Repo.one()
+    jam in list_jams_for_user(current_user)
+  end
+
   @doc """
   Deletes a Track.
 
