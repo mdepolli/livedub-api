@@ -15,6 +15,7 @@ defmodule LivedubWeb.Schema do
     field(:id, non_null(:id))
     field(:email, non_null(:string))
     field(:full_name, non_null(:string))
+    field(:profile_picture, :string)
   end
 
   object :jam do
@@ -86,6 +87,7 @@ defmodule LivedubWeb.Schema do
     field :update_user, type: :user do
       arg(:full_name, :string)
       arg(:password, :string)
+      arg(:profile_picture, :string)
 
       middleware(LivedubWeb.Middleware.Auth)
       resolve(&AccountsResolver.update_user/3)

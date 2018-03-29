@@ -8,6 +8,7 @@ defmodule Livedub.Accounts.User do
     field(:password_hash, :string)
     field(:password, :string, virtual: true)
     field(:full_name, :string)
+    field(:profile_picture, :string)
     many_to_many(:jams, Livedub.Music.Jam, join_through: "jams_users")
     has_many(:tracks, Livedub.Music.Track)
     has_many(:clips, through: [:tracks, :clips])
@@ -18,7 +19,7 @@ defmodule Livedub.Accounts.User do
   @doc false
   def changeset(%User{} = user, attrs) do
     user
-    |> cast(attrs, ~w(email full_name)a)
+    |> cast(attrs, ~w(email full_name profile_picture)a)
     |> validate_required(~w(email full_name)a)
     |> validate_length(:email, min: 1, max: 255)
     |> validate_format(:email, ~r/@/)
@@ -37,7 +38,7 @@ defmodule Livedub.Accounts.User do
   @doc false
   def update_changeset(%User{} = user, attrs) do
     user
-    |> cast(attrs, ~w(full_name password)a)
+    |> cast(attrs, ~w(full_name password profile_picture)a)
     |> validate_length(:password, min: 6, max: 100)
     |> put_password_hash()
   end
