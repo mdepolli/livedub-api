@@ -308,8 +308,8 @@ defmodule Livedub.Music do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_clip(%User{} = user, %Track{} = track, attrs \\ %{}) do
-    attrs = Map.merge(attrs, %{user_id: user.id, track_id: track.id})
+  def create_clip(%Track{} = track, attrs \\ %{}) do
+    attrs = Map.merge(attrs, %{track_id: track.id})
 
     %Clip{}
     |> Clip.changeset(attrs)

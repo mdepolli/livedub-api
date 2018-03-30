@@ -75,7 +75,7 @@ defmodule LivedubWeb.MusicResolver do
       }) do
     with %Track{} = track <- Music.get_track(track_id),
          true <- Music.check_authorization_for_track(track, current_user),
-         {:ok, updated_track} <- Music.update_track(track, %{title: title}) do
+         {:ok, %Track{} = updated_track} <- Music.update_track(track, %{title: title}) do
       {:ok, updated_track}
     else
       nil ->
@@ -92,7 +92,7 @@ defmodule LivedubWeb.MusicResolver do
   def delete_track(_root, %{track_id: track_id}, %{context: %{current_user: current_user}}) do
     with %Track{} = track <- Music.get_track(track_id),
          true <- Music.check_authorization_for_track(track, current_user),
-         {:ok, deleted_track} <- Music.delete_track(track) do
+         {:ok, %Track{} = deleted_track} <- Music.delete_track(track) do
       {:ok, deleted_track}
     else
       nil ->
@@ -112,12 +112,18 @@ defmodule LivedubWeb.MusicResolver do
   end
 
   def create_clip(_root, args, %{context: %{current_user: current_user}}) do
-    track = Music.get_track!(args[:track_id])
-
-    with {:ok, %Clip{} = clip} <- Music.create_clip(current_user, track, args) do
+    with %Track{} = track <- Music.get_track(args[:track_id]),
+         true <- Music.check_authorization_for_track(track, current_user),
+         {:ok, %Clip{} = clip} <- Music.create_clip(track, args) do
       {:ok, clip}
     else
-      {:error, changeset} ->
+      nil ->
+        {:error, "Track does not exist"}
+
+      false ->
+        {:error, "User is not authorized to edit track"}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
         {:error, message: "Could not create clip", details: error_details(changeset)}
     end
   end
