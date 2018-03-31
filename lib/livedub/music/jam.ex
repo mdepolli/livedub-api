@@ -21,7 +21,6 @@ defmodule Livedub.Music.Jam do
     jam
     |> cast(attrs, @all_fields)
     |> put_assoc(:users, attrs[:users])
-    |> put_assoc(:tracks, attrs[:tracks])
   end
 
   @doc false

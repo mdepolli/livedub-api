@@ -68,8 +68,7 @@ defmodule Livedub.Music do
 
   """
   def create_jam(%User{} = user, attrs \\ %{}) do
-    attrs =
-      Map.merge(attrs, %{users: [user], tracks: [%Track{title: "Track 1", user_id: user.id}]})
+    attrs = Map.merge(attrs, %{users: [user]})
 
     %Jam{}
     |> Jam.changeset(attrs)
