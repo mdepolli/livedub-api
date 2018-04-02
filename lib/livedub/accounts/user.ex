@@ -39,6 +39,7 @@ defmodule Livedub.Accounts.User do
   def update_changeset(%User{} = user, attrs) do
     user
     |> cast(attrs, ~w(full_name password profile_picture)a)
+    |> validate_required(~w(full_name)a)
     |> validate_length(:password, min: 6, max: 100)
     |> put_password_hash()
   end
