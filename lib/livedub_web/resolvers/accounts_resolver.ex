@@ -27,7 +27,7 @@ defmodule LivedubWeb.AccountsResolver do
         {:ok, user}
 
       {:error, changeset} ->
-        {:error, message: "Could not create user", details: error_details(changeset)}
+        {:error, message: "Could not update user", details: error_details(changeset)}
     end
   end
 
