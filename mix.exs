@@ -20,7 +20,7 @@ defmodule Livedub.Mixfile do
   def application do
     [
       mod: {Livedub.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:sentry, :logger, :runtime_tools]
     ]
   end
 
@@ -44,7 +44,8 @@ defmodule Livedub.Mixfile do
       {:guardian, "~> 1.0.0"},
       {:absinthe, "~> 1.4"},
       {:absinthe_plug, "~> 1.4"},
-      {:absinthe_ecto, ">= 0.0.0"}
+      {:absinthe_ecto, ">= 0.0.0"},
+      {:sentry, "~> 6.2.0"}
     ]
   end
 
