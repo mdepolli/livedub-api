@@ -44,16 +44,17 @@ defmodule Livedub.Music do
 
   def get_jam(id), do: Repo.get(Jam, id)
 
-  def get_jam_for_user(jam_id, user) do
+  def get_jam_for_user(jam_id, %User{} = user) do
     jam = get_jam(jam_id)
     jams = list_jams_for_user(user)
-
-    if jam != nil and jam in jams do
-      {:ok, jam}
-    else
-      {:error, "Jam doesn't exist for this user"}
-    end
+    get_jam_for_user(jam, jams)
   end
+
+  def get_jam_for_user(%Jam{} = jam, jams) do
+    if jam in jams, do: jam, else: nil
+  end
+
+  def get_jam_for_user(nil, _jams), do: nil
 
   @doc """
   Creates a jam.
@@ -89,7 +90,7 @@ defmodule Livedub.Music do
   """
   def update_jam(%Jam{} = jam, attrs) do
     jam
-    |> Jam.changeset(attrs)
+    |> Jam.update_changeset(attrs)
     |> Repo.update()
   end
 

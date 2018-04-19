@@ -7,10 +7,10 @@ defmodule LivedubWeb.MusicResolver do
   end
 
   def get_jam(_root, %{jam_id: jam_id}, %{context: %{current_user: current_user}}) do
-    with {:ok, %Jam{} = jam} <- Music.get_jam_for_user(jam_id, current_user) do
+    with %Jam{} = jam <- Music.get_jam_for_user(jam_id, current_user) do
       {:ok, jam}
     else
-      {:error, message} -> {:error, message: message}
+      nil -> {:error, "Jam doesn't exist for this user"}
     end
   end
 
@@ -18,7 +18,7 @@ defmodule LivedubWeb.MusicResolver do
     with {:ok, %Jam{} = jam} <- Music.create_jam(current_user, %{title: title}) do
       {:ok, jam}
     else
-      {:error, changeset} ->
+      {:error, %Ecto.Changeset{} = changeset} ->
         {:error, message: "Could not create jam", details: error_details(changeset)}
     end
   end
@@ -34,14 +34,29 @@ defmodule LivedubWeb.MusicResolver do
   def remove_user_from_jam(_root, %{jam_id: jam_id, user_id: user_id}, %{
         context: %{current_user: current_user}
       }) do
-    with jams <- Music.list_jams_for_user(current_user),
-         %Jam{} = jam <- Music.get_jam(jam_id),
-         true <- jam in jams,
+    with %Jam{} = jam <- Music.get_jam_for_user(jam_id, current_user),
          %User{} = user <- Accounts.get_user(user_id),
          {:ok, _} <- Music.remove_user_from_jam(jam, user) do
       {:ok, jam}
     else
+      nil -> {:error, "Jam doesn't exist for this user"}
       _ -> {:error, message: "Could not remove user from jam"}
+    end
+  end
+
+  def update_jam(_root, %{jam_id: jam_id, title: title}, %{context: %{current_user: current_user}}) do
+    with %Jam{} = jam <- Music.get_jam_for_user(jam_id, current_user),
+         {:ok, updated_jam} <- Music.update_jam(jam, %{title: title}) do
+      {:ok, updated_jam}
+    else
+      nil ->
+        {:error, "Jam doesn't exist for this user"}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:error, message: "Could not update jam", details: error_details(changeset)}
+
+      _ ->
+        {:error, message: "Could not update jam"}
     end
   end
 
@@ -49,7 +64,11 @@ defmodule LivedubWeb.MusicResolver do
     with {:ok, %Jam{} = jam} <- Music.delete_jam_for_user(jam_id, current_user) do
       {:ok, jam}
     else
-      {:error, message} -> {:error, message: message}
+      {:error, message} ->
+        {:error, message: message}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:error, message: "Could not create track", details: error_details(changeset)}
     end
   end
 
@@ -65,7 +84,7 @@ defmodule LivedubWeb.MusicResolver do
          {:ok, %Track{} = track} <- Music.create_track(current_user, args) do
       {:ok, track}
     else
-      {:error, changeset} ->
+      {:error, %Ecto.Changeset{} = changeset} ->
         {:error, message: "Could not create track", details: error_details(changeset)}
     end
   end

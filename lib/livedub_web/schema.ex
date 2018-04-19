@@ -116,6 +116,14 @@ defmodule LivedubWeb.Schema do
       resolve(&MusicResolver.remove_user_from_jam/3)
     end
 
+    field :update_jam, type: :jam do
+      arg(:jam_id, non_null(:id))
+      arg(:title, non_null(:string))
+
+      middleware(LivedubWeb.Middleware.Auth)
+      resolve(&MusicResolver.update_jam/3)
+    end
+
     field :delete_jam, type: :jam do
       arg(:jam_id, non_null(:id))
 
