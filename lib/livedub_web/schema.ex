@@ -30,6 +30,7 @@ defmodule LivedubWeb.Schema do
     field(:user_id, non_null(:id))
     field(:jam_id, non_null(:id))
     field(:title, non_null(:string))
+    field(:volume, non_null(:integer))
     field(:clips, non_null(list_of(non_null(:clip))), resolve: assoc(:clips))
     field(:user, non_null(:user), resolve: assoc(:user))
   end
@@ -134,6 +135,7 @@ defmodule LivedubWeb.Schema do
     field :create_track, type: :track do
       arg(:jam_id, non_null(:id))
       arg(:title, non_null(:string))
+      arg(:volume, :integer)
 
       middleware(LivedubWeb.Middleware.Auth)
       resolve(&MusicResolver.create_track/3)
@@ -141,7 +143,8 @@ defmodule LivedubWeb.Schema do
 
     field :update_track, type: :track do
       arg(:track_id, non_null(:id))
-      arg(:title, non_null(:string))
+      arg(:title, :string)
+      arg(:volume, :integer)
 
       middleware(LivedubWeb.Middleware.Auth)
       resolve(&MusicResolver.update_track/3)
