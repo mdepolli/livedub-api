@@ -15,7 +15,7 @@ defmodule LivedubWeb.MusicResolver do
   end
 
   def create_jam(_root, %{title: title}, %{context: %{current_user: current_user}}) do
-    with {:ok, %Jam{} = jam} <- Music.create_jam(current_user, %{title: title}) do
+    with {:ok, %Jam{} = jam} <- Music.create_jam(%{title: title}, current_user) do
       {:ok, jam}
     else
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -77,11 +77,9 @@ defmodule LivedubWeb.MusicResolver do
     {:ok, tracks}
   end
 
-  def create_track(_root, args = %{jam_id: jam_id, title: _title}, %{
-        context: %{current_user: current_user}
-      }) do
-    with %Jam{} = _jam <- Music.get_jam(jam_id),
-         {:ok, %Track{} = track} <- Music.create_track(current_user, args) do
+  def create_track(_root, args, %{context: %{current_user: current_user}}) do
+    with %Jam{} = _jam <- Music.get_jam(args[:jam_id]),
+         {:ok, %Track{} = track} <- Music.create_track(args, current_user) do
       {:ok, track}
     else
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -89,12 +87,10 @@ defmodule LivedubWeb.MusicResolver do
     end
   end
 
-  def update_track(_root, %{track_id: track_id, title: title}, %{
-        context: %{current_user: current_user}
-      }) do
-    with %Track{} = track <- Music.get_track(track_id),
+  def update_track(_root, args, %{context: %{current_user: current_user}}) do
+    with %Track{} = track <- Music.get_track(args[:track_id]),
          true <- Music.check_authorization_for_track(track, current_user),
-         {:ok, %Track{} = updated_track} <- Music.update_track(track, %{title: title}) do
+         {:ok, %Track{} = updated_track} <- Music.update_track(track, args) do
       {:ok, updated_track}
     else
       nil ->

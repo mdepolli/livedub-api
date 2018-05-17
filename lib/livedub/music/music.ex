@@ -5,7 +5,9 @@ defmodule Livedub.Music do
 
   import Ecto.Query, warn: false
 
-  alias Livedub.{Repo, Accounts.User, Music.Jam, Music.Track, Music.Clip, Music.JamUser}
+  alias Livedub.{Repo, Accounts.User, Music.JamUser}
+
+  alias Livedub.Music.Jam
 
   @doc """
   Returns the list of jams.
@@ -68,9 +70,13 @@ defmodule Livedub.Music do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_jam(%User{} = user, attrs \\ %{}) do
-    attrs = Map.merge(attrs, %{users: [user]})
+  def create_jam(attrs, %User{} = user) do
+    attrs
+    |> Enum.into(%{users: [user]})
+    |> create_jam()
+  end
 
+  def create_jam(attrs \\ %{}) do
     %Jam{}
     |> Jam.changeset(attrs)
     |> Repo.insert()
@@ -152,6 +158,10 @@ defmodule Livedub.Music do
     Jam.changeset(jam, %{})
   end
 
+  alias Livedub.Music.Track
+
+  @available_colors ~w(F6E23E DA4A8F 86D8FC DA4032 C41BFA FFA44D 69DE4C D1D1D0)
+
   @doc """
   Returns the list of tracks.
 
@@ -201,9 +211,13 @@ defmodule Livedub.Music do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_track(%User{} = user, attrs \\ %{}) do
-    attrs = Map.merge(attrs, %{user_id: user.id})
+  def create_track(attrs, %User{} = user) when is_map(attrs) do
+    attrs
+    |> Map.merge(%{user_id: user.id})
+    |> create_track()
+  end
 
+  def create_track(attrs \\ %{}) do
     %Track{}
     |> Track.changeset(attrs)
     |> Repo.insert()
@@ -260,6 +274,19 @@ defmodule Livedub.Music do
   def change_track(%Track{} = track) do
     Track.changeset(track, %{})
   end
+
+  def pick_color(%Jam{} = jam) do
+    Enum.random(@available_colors -- used_colors(jam))
+  end
+
+  defp used_colors(%Jam{} = jam) do
+    jam
+    |> Ecto.assoc(:tracks)
+    |> Repo.all()
+    |> Enum.map(&Map.get(&1, :color))
+  end
+
+  alias Livedub.Music.Clip
 
   @doc """
   Returns the list of clips.

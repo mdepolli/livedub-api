@@ -20,11 +20,11 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-# Import environment specific config. This must remain at the bottom
-# of this file so it overrides the configuration defined above.
-import_config "#{Mix.env()}.exs"
-
 config :livedub, Livedub.Guardian,
   issuer: "Livedub",
   secret_key: "Ntoa2EwLeXUXjJpEA5lC0KLt7XGU1yOhqTalPWPv24nJ/kXeHf8LcwLm1FVWHb90",
   error_handler: Livedub.AuthErrorHandler
+
+# Import environment specific config. This must remain at the bottom
+# of this file so it overrides the configuration defined above.
+import_config "#{Mix.env()}.exs"
