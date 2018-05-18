@@ -39,7 +39,7 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :livedub, Livedub.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "marcelo",
+  username: "postgres",
   password: "",
   database: "livedub_dev",
   hostname: "localhost",
