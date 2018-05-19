@@ -3,7 +3,7 @@ defmodule Livedub.Repo.Migrations.AddColorToTrack do
 
   def change do
     alter table(:tracks) do
-      add :color, :string, null: false
+      add :color, :string
     end
   end
 end
