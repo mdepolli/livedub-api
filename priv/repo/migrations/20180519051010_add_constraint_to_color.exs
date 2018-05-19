@@ -3,7 +3,7 @@ defmodule Livedub.Repo.Migrations.AddConstraintToColor do
 
   def change do
     alter table(:tracks) do
-      modify :color, null: false
+      modify :color, :string, null: false
     end
   end
 end
