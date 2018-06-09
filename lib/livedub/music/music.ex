@@ -237,7 +237,7 @@ defmodule Livedub.Music do
   """
   def update_track(%Track{} = track, attrs) do
     track
-    |> Track.changeset(attrs)
+    |> Track.update_changeset(attrs)
     |> Repo.update()
   end
 
