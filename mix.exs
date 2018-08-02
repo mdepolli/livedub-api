@@ -45,7 +45,7 @@ defmodule Livedub.Mixfile do
       {:absinthe, "~> 1.4"},
       {:absinthe_plug, "~> 1.4"},
       {:absinthe_ecto, ">= 0.0.0"},
-      {:sentry, "~> 6.2.0"}
+      {:sentry, "~> 6.4"}
     ]
   end
 
