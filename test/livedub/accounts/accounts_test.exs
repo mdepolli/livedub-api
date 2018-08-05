@@ -8,13 +8,11 @@ defmodule Livedub.AccountsTest do
 
     @valid_attrs %{
       email: "peter.potamus@example.com",
-      password: "123 super secret"
+      password: "123 super secret",
+      full_name: "Peter Potamus"
     }
-    @update_attrs %{
-      email: "updated@example.com",
-      password: "some updated password"
-    }
-    @invalid_attrs %{email: nil, password: nil}
+    @update_attrs %{full_name: "Peter Quill"}
+    @invalid_attrs %{full_name: nil}
 
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =
@@ -28,13 +26,13 @@ defmodule Livedub.AccountsTest do
     test "list_users/0 returns all users" do
       user = user_fixture()
 
-      assert Accounts.list_users() == [user]
+      assert Accounts.list_users() |> Enum.map(& &1.id) == [user.id]
     end
 
     test "get_user!/1 returns the user with given id" do
       user = user_fixture()
 
-      assert Accounts.get_user!(user.id) == user
+      assert Accounts.get_user!(user.id) |> Map.get(:id) == user.id
     end
 
     test "create_user/1 with valid data creates a user" do
@@ -52,16 +50,14 @@ defmodule Livedub.AccountsTest do
 
       assert {:ok, user} = Accounts.update_user(user, @update_attrs)
       assert %User{} = user
-      assert user.email == "updated@example.com"
-      assert user.password == "some updated password"
+      assert user.full_name == "Peter Quill"
     end
 
     test "update_user/2 with invalid data returns error changeset" do
       user = user_fixture()
 
       assert {:error, %Ecto.Changeset{}} = Accounts.update_user(user, @invalid_attrs)
-
-      assert user == Accounts.get_user!(user.id)
+      assert user.full_name == "Peter Potamus"
     end
 
     test "delete_user/1 deletes the user" do

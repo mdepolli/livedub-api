@@ -1,4 +1,4 @@
-defmodule Livedub.MusicTest do
+defmodule Livedub.ClipsTest do
   use Livedub.DataCase
 
   alias Livedub.{Accounts, Music}
