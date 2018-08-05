@@ -129,7 +129,7 @@ defmodule LivedubWeb.MusicResolver do
   def create_clip(_root, args, %{context: %{current_user: current_user}}) do
     with %Track{} = track <- Music.get_track(args[:track_id]),
          true <- Music.check_authorization_for_track(track, current_user),
-         {:ok, %Clip{} = clip} <- Music.create_clip(track, args) do
+         {:ok, %Clip{} = clip} <- Music.create_clip(args, track) do
       {:ok, clip}
     else
       nil ->

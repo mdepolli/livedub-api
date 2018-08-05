@@ -5,9 +5,7 @@ defmodule Livedub.Music do
 
   import Ecto.Query, warn: false
 
-  alias Livedub.{Repo, Accounts.User, Music.JamUser}
-
-  alias Livedub.Music.Jam
+  alias Livedub.{Repo, Accounts.User, Music.JamUser, Music.Jam}
 
   @doc """
   Returns the list of jams.
@@ -70,16 +68,16 @@ defmodule Livedub.Music do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_jam(attrs, %User{} = user) do
-    attrs
-    |> Enum.into(%{users: [user]})
-    |> create_jam()
-  end
-
   def create_jam(attrs \\ %{}) do
     %Jam{}
     |> Jam.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def create_jam(attrs, %User{} = user) do
+    attrs
+    |> Enum.into(%{users: [user]})
+    |> create_jam()
   end
 
   @doc """
@@ -211,16 +209,16 @@ defmodule Livedub.Music do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_track(attrs, %User{} = user) when is_map(attrs) do
-    attrs
-    |> Map.merge(%{user_id: user.id})
-    |> create_track()
-  end
-
   def create_track(attrs \\ %{}) do
     %Track{}
     |> Track.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def create_track(attrs, %User{} = user) when is_map(attrs) do
+    attrs
+    |> Map.merge(%{user_id: user.id})
+    |> create_track()
   end
 
   @doc """
@@ -335,12 +333,16 @@ defmodule Livedub.Music do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_clip(%Track{} = track, attrs \\ %{}) do
-    attrs = Map.merge(attrs, %{track_id: track.id})
-
+  def create_clip(attrs \\ %{}) do
     %Clip{}
     |> Clip.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def create_clip(attrs, %Track{} = track) do
+    attrs
+    |> Map.merge(%{track_id: track.id})
+    |> create_clip()
   end
 
   @doc """

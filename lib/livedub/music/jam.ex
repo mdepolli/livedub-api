@@ -13,13 +13,14 @@ defmodule Livedub.Music.Jam do
     timestamps()
   end
 
-  @required_fields ~w()a
-  @all_fields ~w(title)a ++ @required_fields
+  @required_fields ~w(title)a
+  @all_fields ~w()a ++ @required_fields
 
   @doc false
   def changeset(%Jam{} = jam, attrs \\ %{}) do
     jam
     |> cast(attrs, @all_fields)
+    |> validate_required(@required_fields)
     |> put_assoc(:users, attrs[:users])
   end
 
@@ -35,6 +36,7 @@ defmodule Livedub.Music.Jam do
   @doc false
   def update_changeset(%Jam{} = jam, attrs \\ %{}) do
     jam
-    |> cast(attrs, [:title])
+    |> cast(attrs, @all_fields)
+    |> validate_required(@required_fields)
   end
 end
