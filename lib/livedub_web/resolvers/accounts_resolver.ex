@@ -3,7 +3,7 @@ defmodule LivedubWeb.AccountsResolver do
 
   def sign_up(_root, args, _info) do
     with {:ok, %User{} = user} <- Accounts.create_user(args),
-         {:ok, jwt, _claims} <- Guardian.encode_and_sign(user, %{}, token_type: "access") do
+         {:ok, jwt, _claims} <- Guardian.encode_and_sign(user, %{}, token_type: "access", ttl: {2, :minutes}) do
       {:ok, %{user: user, access_token: jwt}}
     else
       {:error, changeset} ->
@@ -13,7 +13,7 @@ defmodule LivedubWeb.AccountsResolver do
 
   def sign_in(_root, %{email: email, password: password}, _info) do
     with {:ok, %User{} = user} <- Accounts.get_user_and_verify_password(email, password),
-         {:ok, jwt, _claims} <- Guardian.encode_and_sign(user, %{}, token_type: "access") do
+         {:ok, jwt, _claims} <- Guardian.encode_and_sign(user, %{}, token_type: "access", ttl: {2, :minutes}) do
       {:ok, %{user: user, access_token: jwt}}
     else
       {:error, _} ->
