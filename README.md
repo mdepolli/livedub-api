@@ -1,10 +1,23 @@
 # Livedub
 
-To start your Phoenix server:
+## Mac development
 
+Install elixir and postgresql `brew install postgresql`.
+
+You will need to terminal sessions. One for database server the other for our Phoenix server.
+
+## To start your database server
+
+  * Init a database: `pg_ctl init -D ./pg_data`
+  * Start the service: `postgres -D ./pg_data/`
+  * Leave this terminal open, start the Phoenix server
+
+## To start your Phoenix server:
+
+  * Ask someone on the team for a copy of the secrets file
+    * Should be sent over over secure channels such as Wire, Signal, iMessage, WhatsApp, Telegram, etc -- Not Slack
   * Install dependencies with `mix deps.get`
   * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
-  * Install Node.js dependencies with `cd assets && npm install`
   * Start Phoenix endpoint with `mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
