@@ -10,7 +10,9 @@ You will need to terminal sessions. One for database server the other for our Ph
 
   * Init a database: `pg_ctl init -D ./pg_data`
   * Start the service: `postgres -D ./pg_data/`
-  * Leave this terminal open, start the Phoenix server
+  * Leave this terminal open, and open a new one
+  * Create a default user: `createuser postgres -s -r`
+  * You can now reuse this terminal session to start the Phoenix server
 
 ## To start your Phoenix server:
 
