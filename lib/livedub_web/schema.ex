@@ -31,6 +31,7 @@ defmodule LivedubWeb.Schema do
     field(:jam_id, non_null(:id))
     field(:title, non_null(:string))
     field(:volume, non_null(:integer))
+    field(:mute, non_null(:boolean))
     field(:color, non_null(:string))
     field(:clips, non_null(list_of(non_null(:clip))), resolve: assoc(:clips))
     field(:user, non_null(:user), resolve: assoc(:user))
@@ -137,6 +138,7 @@ defmodule LivedubWeb.Schema do
       arg(:jam_id, non_null(:id))
       arg(:title, non_null(:string))
       arg(:volume, :integer)
+      arg(:mute, :boolean)
       arg(:color, :string)
 
       middleware(LivedubWeb.Middleware.Auth)
@@ -147,6 +149,7 @@ defmodule LivedubWeb.Schema do
       arg(:track_id, non_null(:id))
       arg(:title, :string)
       arg(:volume, :integer)
+      arg(:mute, :boolean)
       arg(:color, :string)
 
       middleware(LivedubWeb.Middleware.Auth)
