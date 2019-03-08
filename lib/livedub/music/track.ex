@@ -6,6 +6,7 @@ defmodule Livedub.Music.Track do
   schema "tracks" do
     field(:title, :string)
     field(:volume, :integer, default: 70)
+    field(:mute, :boolean)
     field(:color, :string)
     belongs_to(:user, Livedub.Accounts.User)
     belongs_to(:jam, Livedub.Music.Jam)
@@ -17,7 +18,7 @@ defmodule Livedub.Music.Track do
   @doc false
   def changeset(%Track{} = track, attrs) do
     track
-    |> cast(attrs, ~w(user_id jam_id title volume color)a)
+    |> cast(attrs, ~w(user_id jam_id title volume mute color)a)
     |> validate_required(~w(user_id jam_id title volume)a)
     |> assoc_constraint(:user)
     |> assoc_constraint(:jam)
@@ -28,7 +29,7 @@ defmodule Livedub.Music.Track do
 
   def update_changeset(%Track{} = track, attrs) do
     track
-    |> cast(attrs, ~w(title volume color)a)
+    |> cast(attrs, ~w(title volume mute color)a)
     |> validate_required(~w(title volume color)a)
     |> validate_inclusion(:volume, 0..100)
     |> validate_format(:color, ~r/\A[0-9A-F]{6}\z/)
